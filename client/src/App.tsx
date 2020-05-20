@@ -1,8 +1,14 @@
-import React from "react";
-import "./App.css";
-
-function App() {
-  return <div className="App">hello world</div>;
+import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
+import { bugAdded } from "./modules/bugs";
+import store from "./store";
+export default class App extends Component {
+  render() {
+    store.dispatch(bugAdded("에어팟", 222000, "사고싶다"));
+    return (
+      <div>
+        <Switch></Switch>
+      </div>
+    );
+  }
 }
-
-export default App;
