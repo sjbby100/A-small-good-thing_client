@@ -30,6 +30,14 @@ export const Input = ({ name, value, onChange }: inputProps) => {
       return "passwordC_label";
     }
   };
+  const handleLength = (name: string) => {
+    if (name === "username") {
+      return { maxLength: 10, minLength: 2 };
+    }
+    if (name === "password") {
+      return { maxLength: 14, minLength: 8 };
+    }
+  };
   return (
     <div>
       <label htmlFor={name} className={checkLabel(name)}>
@@ -41,6 +49,7 @@ export const Input = ({ name, value, onChange }: inputProps) => {
         onChange={onChange}
         value={value}
         placeholder={renderPlaceHolder(name)}
+        {...handleLength(name)}
         autoCapitalize="off"
       />
     </div>

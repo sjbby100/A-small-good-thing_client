@@ -26,34 +26,39 @@ export default class extends React.Component<Props, values> {
     };
   }
   componentDidMount() {
-    console.log("회원가입 렌더됨");
+    let err = this.validate();
+    this.setState({ ...this.state, err });
   }
 
-  validateSubmit = (): {} => {
-    let err: any = {};
-    const { state } = this;
-    const { password: p, passwordCheck: pc } = this.state;
+  //실시간 유효성 검증 + 제출 유효성 검증 => 분리 필요 예상
+  validate = (cur: any | null = null): {} => {
+    let state;
+    cur ? (state = cur) : (state = { ...this.state });
+    const { password: p, passwordCheck: pc, err: e } = state;
+    let err = { ...e };
+
     for (let key in state) {
       if (state[key] === "") {
-        if (key === "email") err[key] = "empty" + key;
-        if (key === "username") err[key] = "empty" + key;
-        if (key === "password") err[key] = "empty" + key;
-        if (key === "passwordCheck") err[key] = "empty" + key;
-      } else if (key === "passwordCheck") {
+        err[key] = "empty" + key;
+      } else {
+        delete err[key];
+      }
+      if (key === "passwordCheck") {
         if (p !== pc && p !== "") err[key] = "diffPassword";
       }
     }
-    this.setState({ ...state, err });
     return err;
   };
 
   handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    let err = this.validateSubmit();
+    let err = this.validate();
     this.handlePost(err);
   };
-  handlePost = (err: {}) => {
+
+  handlePost = (err: any) => {
     if (Object.keys(err).length === 0) {
+      console.log("%c에러가 없어요!!!", "color:orange");
       this.props.history.push("/signin");
     } else {
       console.table(err);
@@ -79,13 +84,20 @@ export default class extends React.Component<Props, values> {
 
   handleChange = ({ currentTarget }: any): void => {
     const { value, name } = currentTarget;
-    this.setState({ ...this.state, [name]: value });
+    let cur = { ...this.state };
+    cur[name] = value;
+    let err = this.validate(cur);
+    this.setState({ ...cur, err });
   };
-  renderBtn = (e: any) => {
-    e.preventDefault();
+
+  renderBtn = (): any => {
     const { err } = this.state;
-    console.log(!err);
+    if (Object.keys(err).length !== 0) {
+      return { disabled: true };
+    }
+    return { disabled: false };
   };
+
   renderInput = (values: values) => {
     let renderArr: JSX.Element[] = [];
     for (let key in values) {
@@ -114,9 +126,11 @@ export default class extends React.Component<Props, values> {
             </h1>
           </div>
 
-          <form onSubmit={renderBtn} className="form" autoComplete="off">
+          <form onSubmit={handleSubmit} className="form" autoComplete="off">
             {renderInput(state)}
-            <button className="submit">가입하기</button>
+            <button className="submit" {...renderBtn()}>
+              가입하기
+            </button>
           </form>
           <Link to={"/signin"} className="back">
             로그인으로 돌아가기
