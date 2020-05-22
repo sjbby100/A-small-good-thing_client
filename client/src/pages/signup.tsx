@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "../common/input";
 import "./css/signup.css";
 import { Link, RouteComponentProps } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 
 interface values {
   email: string;
@@ -63,23 +63,25 @@ export default class extends React.Component<Props, values> {
     } else {
       console.table(err);
     }
-    // axios
-    //   .post("http://localhost:8080/user/signup", {
-    //     data: {
-    //       email,
-    //       username,
-    //       password,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     if (res.status === 201) {
-    //       this.props.history.push("/signin");
-    //     } else if (res.status === 409) {
-    //       let err = { ...this.state.err };
-    //       err.submit = "alreadyExistsEmail";
-    //       this.setState({ ...this.state, err });
-    //     }
-    //   });
+
+    axios
+      .post("http://localhost:8080/signup", {
+        data: {
+          email: this.state.email,
+          username: this.state.username,
+          password: this.state.password,
+          mobile: "00",
+        },
+      })
+      .then((res: any) => {
+        if (res.status === 201) {
+          this.props.history.push("/signin");
+        } else if (res.status === 409) {
+          let err = { ...this.state.err };
+          err.submit = "alreadyExistsEmail";
+          this.setState({ ...this.state, err });
+        }
+      });
   };
 
   handleChange = ({ currentTarget }: any): void => {
