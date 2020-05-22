@@ -37,7 +37,7 @@ class Signin extends Component {
     console.log(this.state);
     console.log(errors);
     if (errors.emailErr === "" && errors.pwErr === "") {
-      let post = await axios.post("http://localhost:8080/user/login", {
+      let post = await axios.post("http://localhost:8080/login", {
         data: {
           email,
           password,
