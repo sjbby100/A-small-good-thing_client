@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
-import { bugAdded } from "./modules/bugs";
-import store from "./store";
+import { Route, Switch, Redirect } from "react-router-dom";
+import Signin from "./pages/signin";
 import Signup from "./pages/signup";
+import Main from "./pages/main";
 export default class App extends Component {
   render() {
-    store.dispatch(bugAdded("에어팟", 222000, "사고싶다"));
     return (
       <div>
         <Switch>
-          {/* <Route path="/signin" component={Signin} /> */}
+          <Route path="/login" component={Signin} />
           <Route path="/signup" component={Signup} />
+          <Route path="/home" component={Main} />
+          <Redirect path="/" to="/login" />
         </Switch>
       </div>
     );

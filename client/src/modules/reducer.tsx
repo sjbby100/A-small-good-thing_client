@@ -1,6 +1,11 @@
 import { combineReducers } from "redux";
-import bugsReducer from "./bugs";
-
-export default combineReducers({
-  test: bugsReducer,
+import itemsReducer from "./items";
+import authReducer from "./auth";
+const rootReducer = combineReducers({
+  item: itemsReducer,
+  auth: authReducer,
 });
+
+export default rootReducer;
+
+export type RootState = ReturnType<typeof rootReducer>;
