@@ -2,11 +2,11 @@ import React from "react";
 import { Input } from "../common/input";
 import "./css/signup.css";
 import { Link, RouteComponentProps } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 
 interface values {
   email: string;
-  username: string;
+  user_name: string;
   password: string;
   passwordCheck: string;
   err: any;
@@ -19,7 +19,7 @@ export default class extends React.Component<Props, values> {
     super(props);
     this.state = {
       email: "",
-      username: "",
+      user_name: "",
       password: "",
       passwordCheck: "",
       err: {},
@@ -31,7 +31,7 @@ export default class extends React.Component<Props, values> {
   }
 
   //실시간 유효성 검증 + 제출 유효성 검증 => 분리 필요 예상
-  validate = (cur: any | null = null): {} => {
+  validate = (cur?: any): {} => {
     let state;
     cur ? (state = cur) : (state = { ...this.state });
     const { password: p, passwordCheck: pc, err: e } = state;
@@ -59,27 +59,30 @@ export default class extends React.Component<Props, values> {
   handlePost = (err: any) => {
     if (Object.keys(err).length === 0) {
       console.log("%c에러가 없어요!!!", "color:orange");
-      this.props.history.push("/signin");
+      // this.props.history.push("/signin");
     } else {
       console.table(err);
     }
-    // axios
-    //   .post("http://localhost:8080/user/signup", {
-    //     data: {
-    //       email,
-    //       username,
-    //       password,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     if (res.status === 201) {
-    //       this.props.history.push("/signin");
-    //     } else if (res.status === 409) {
-    //       let err = { ...this.state.err };
-    //       err.submit = "alreadyExistsEmail";
-    //       this.setState({ ...this.state, err });
-    //     }
-    //   });
+    const { email, user_name, password } = this.state;
+    axios
+      .post("http://localhost:8080/signup", {
+        data: {
+          email,
+          user_name,
+          password,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          this.props.history.push("/signin");
+        } else if (res.status === 409) {
+          let err = { ...this.state.err };
+          err.submit = "alreadyExistsEmail";
+          this.setState({ ...this.state, err });
+          alert("이미 존재하는 이메일 입니다!!!!");
+          console.log("%c회원가입에 실패하셨습니다!", "style:red");
+        }
+      });
   };
 
   handleChange = ({ currentTarget }: any): void => {
@@ -116,7 +119,7 @@ export default class extends React.Component<Props, values> {
   };
 
   render() {
-    const { handleSubmit, renderInput, state, renderBtn } = this;
+    const { handleSubmit, renderInput, state, renderBtn, handlePost } = this;
     return (
       <div className="container">
         <div className="wrapper">
@@ -128,7 +131,11 @@ export default class extends React.Component<Props, values> {
 
           <form onSubmit={handleSubmit} className="form" autoComplete="off">
             {renderInput(state)}
-            <button className="submit" {...renderBtn()}>
+            <button
+              className="submit"
+              onClick={() => handlePost}
+              {...renderBtn()}
+            >
               가입하기
             </button>
           </form>
