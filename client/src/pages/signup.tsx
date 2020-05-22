@@ -63,6 +63,7 @@ export default class extends React.Component<Props, values> {
     } else {
       console.table(err);
     }
+
     const { email, user_name, password } = this.state;
     axios
       .post("http://localhost:8080/signup", {
