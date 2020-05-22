@@ -1,18 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
+import List from "../components/listComponent";
 import useItems from "../hooks/useItems";
 import useUserInfo from "../hooks/useAuth";
 import response from "../services/fakeData";
+import Card from "../common/monthlySum";
+import Axios from "axios";
+import monthlySum from "../common/monthlySum";
+import Search from "../common/search";
 const { signInSuccess } = response;
 const { items } = response.monthly_list;
-// import list form "../components/listComponent";
+
 interface Props extends RouteComponentProps {}
 
 const Main: React.SFC<Props> = ({ history }) => {
   const { getItem, items_monthly, monthlySaved, SumAllMonthly } = useItems();
   const { user_id, user_name, onLogin, onLogout } = useUserInfo();
-
+  const [value, setValue] = useState("");
   useEffect(() => {
+    // Axios.get("http://localhost:8080/mainpage", {
+    //   data: user_id,
+    // }).then((res: any) => {
+    //   const { items } = res.monthly_list;
+    //   getItem(items)
+    // });
     onLogin(signInSuccess.respon);
     getItem(items);
     SumAllMonthly();
@@ -22,19 +33,6 @@ const Main: React.SFC<Props> = ({ history }) => {
     console.log(monthlySaved);
   });
 
-  const renderList = (list: any) => {
-    return (
-      <ul>
-        {list.map((item: any) => (
-          <li key={item.item_id}>
-            <h2>{item.item_name}</h2>
-            <h2>{item.item_price}</h2>
-            <h2>{item.memo}</h2>
-          </li>
-        ))}
-      </ul>
-    );
-  };
   const renderGreet = () => (
     <div className="greet">
       <h1> 안녕하세요. {user_name}님</h1>
@@ -44,6 +42,7 @@ const Main: React.SFC<Props> = ({ history }) => {
       </h2>
     </div>
   );
+
   const checkUserId = () => {
     if (user_id === 0) {
       // alert("로그인이 필요합니다!");
@@ -59,6 +58,9 @@ const Main: React.SFC<Props> = ({ history }) => {
       {checkUserId()}
       {renderGreet()}
       <button onClick={() => handleLogOut()}>로그아웃</button>
+      <Card sum={monthlySaved} />
+      <Search onChange={setValue} />
+      <List items={items_monthly} />
     </div>
   );
 };
