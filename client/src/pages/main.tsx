@@ -9,7 +9,7 @@ const { items } = response.monthly_list;
 interface Props extends RouteComponentProps {}
 
 const Main: React.SFC<Props> = ({ history }) => {
-  const { getItem, item, monthlySaved, SumAllMonthly } = useItems();
+  const { getItem, items_monthly, monthlySaved, SumAllMonthly } = useItems();
   const { user_id, user_name, onLogin, onLogout } = useUserInfo();
 
   useEffect(() => {

@@ -4,9 +4,11 @@ import { getItems, sumAllSaved } from "../modules/items";
 import { useCallback } from "react";
 
 export default function useItems() {
-  const item = useSelector((state: RootState) => state.item);
+  const items_monthly = useSelector(
+    (state: RootState) => state.items.items_monthly,
+  );
   const monthlySaved = useSelector(
-    (state: RootState) => state.item.mothlySaved,
+    (state: RootState) => state.items.mothlySaved,
   );
   const dispatch = useDispatch();
   const getItem = useCallback(
@@ -19,7 +21,7 @@ export default function useItems() {
     dispatch(sumAllSaved());
   }, [dispatch]);
   return {
-    item,
+    items_monthly,
     getItem,
     monthlySaved,
     SumAllMonthly,
