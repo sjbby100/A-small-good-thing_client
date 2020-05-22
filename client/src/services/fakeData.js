@@ -1,8 +1,9 @@
-export const fake = {
+export default {
   signInSuccess: {
     status: 200,
     respon: {
-      user_id: "00001",
+      user_id: 1,
+      user_name: "경태",
     },
   },
   signInfailed_email: {
@@ -18,7 +19,7 @@ export const fake = {
     status: 409,
   },
   monthly_list: {
-    user_name: "권경태",
+    user_name: "경태",
     items: [
       {
         item_id: 1,

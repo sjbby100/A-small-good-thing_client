@@ -5,11 +5,12 @@ import { Redirect, Link, RouteComponentProps } from "react-router-dom";
 import * as SigninInput from "../components/signin_Input";
 import "../pages/css/signin.css";
 //* fake data
-import { fake } from "../services/fakeData";
+// import { fake } from "../services/fakeData";
 // todo [] error message 받는 방법 찾기
 interface state {
   email: string;
   password: string;
+  err: any;
   errors: {};
 }
 interface Props extends RouteComponentProps {}
@@ -21,9 +22,11 @@ class Signin extends React.Component<Props, state> {
     this.state = {
       email: "",
       password: "",
+      err: null,
       errors: {},
     };
   }
+
   handleChange = ({ currentTarget }: any) => {
     //email 변경
     const { value, name } = currentTarget;
@@ -43,7 +46,7 @@ class Signin extends React.Component<Props, state> {
 
     if (vali_error === "" && Object.keys(errors).length === 0) {
       axios
-        .post("http://localhost:4000/signin", {
+        .post("http://localhost:8080/login", {
           data: {
             email,
             password,
@@ -51,14 +54,22 @@ class Signin extends React.Component<Props, state> {
         })
         .then((res) => {
           if (res.status === 200) {
-            // ! state 관리! redux로!!!
-            console.log("$c 로그인 성공!", "color : green");
+            console.log("%c 로그인 성공!", "color : green");
             this.props.history.replace("/home");
-            //return <Redirect path="/signin" to="/home" />;
           } else if (res.status === 403) {
-            console.log("%c이미 존재하는 이메일입니다.", "color:red");
+            //! replace?
+            alert("이메일을 확인해주세요.");
+            this.props.history.replace("/signin");
+            // let err: number = res.status;
+            // this.setState({ ...this.state, err });
+            // console.log(this.state);
+            // console.log("%c 이메일을 확인해주세요.", "color:red");
           } else if (res.status === 401) {
-            console.log("%c비밀번호를 확인해주세요.", "color:red");
+            alert("비밀번호를 확인해주세요.");
+            this.props.history.replace("signin");
+            // let err: number = res.status;
+            // this.setState({ ...this.state, err });
+            // console.log("%c비밀번호를 확인해주세요.", "color:red");
           }
         });
     }

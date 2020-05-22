@@ -65,7 +65,7 @@ export default class extends React.Component<Props, values> {
     }
 
     axios
-      .post("http://localhost:4000/signup", {
+      .post("http://localhost:8080/signup", {
         data: {
           email: this.state.email,
           username: this.state.username,
@@ -123,7 +123,7 @@ export default class extends React.Component<Props, values> {
       <div className="container">
         <div className="wrapper">
           <div className="textbox">
-            <h1>
+            <h1 className="signup_greet">
               간단한 회원 가입을 <br /> 진행해주세요
             </h1>
           </div>
@@ -134,8 +134,8 @@ export default class extends React.Component<Props, values> {
               가입하기
             </button>
           </form>
-          <Link to={"/signin"} className="back">
-            로그인으로 돌아가기
+          <Link to={"/login"} className="back">
+            이미 아이디가 있으신가요?
           </Link>
         </div>
       </div>
