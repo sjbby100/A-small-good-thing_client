@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 //import { Redirect } from "react-router-dom";
 import * as SigninInput from "../components/signin_Input";
 //* fake data
-import { fake } from "../services/fakeData";
+// import { fake } from "../services/fakeData";
 // todo [] error message 받는 방법 찾기
 
 //state type 지정 : interface 사용
@@ -37,7 +37,7 @@ class Signin extends Component {
     console.log(this.state);
     console.log(errors);
     if (errors.emailErr === "" && errors.pwErr === "") {
-      let post = await axios.post("http://localhost:8080/user/login", {
+      let post = await axios.post("http://localhost:8080/login", {
         data: {
           email,
           password,
