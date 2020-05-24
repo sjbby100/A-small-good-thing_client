@@ -27,14 +27,19 @@ const Main: React.SFC<Props> = ({ history }) => {
     //   const { items } = res.monthly_list;
     //   getItem(items)
     // });
-    onLogin(signInSuccess.respon);
+    // onLogin(signInSuccess.respon);
+    // console.log(user_id, user_name);
     getItem(items);
-    SumAllMonthly();
+
+    // monthlySaved === 0 && SumAllMonthly();
   }, []);
+  useEffect(() => {
+    SumAllMonthly();
+  }, [items_monthly]);
 
   useEffect(() => {
     {
-      // checkUserId();
+      checkUserId();
     }
   });
 
