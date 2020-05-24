@@ -44,6 +44,7 @@ export const Input = ({ name, value, onChange }: inputProps) => {
         {renderLable(name)}
       </label>
       <input
+        className="signup_input"
         type={renderType(name)}
         name={name}
         onChange={onChange}

@@ -5,14 +5,16 @@ body {
   padding: 0px;
   background-color: #f5f8f9;
   box-sizing: border-box;
-  overflow: hidden; }
+  overflow: hidden;
+}
 
 .container {
   display: grid;
   height: 100vh;
   background-color: #f5f8f9;
   justify-content: center;
-  align-content: center; }
+  align-content: center;
+}
 
 .wrapper {
   display: flex;
@@ -21,21 +23,25 @@ body {
   height: 720px;
   background: #ffffff;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.04);
-  border-radius: 16px; }
+  border-radius: 16px;
+}
 
 .textbox {
   position: relative;
-  margin: 44px 0px 42px 56px; }
+  margin: 44px 0px 42px 56px;
+}
 
 .form {
   position: relative;
   margin-left: 56px;
-  height: 100%; }
+  height: 100%;
+}
 
 .signup_greet {
   font-weight: 500;
   font-size: 26px;
-  letter-spacing: -0.06em; }
+  letter-spacing: -0.06em;
+}
 
 label {
   display: block;
@@ -44,16 +50,20 @@ label {
   font-size: 21px;
   letter-spacing: -0.06em;
   margin-bottom: 6px;
-  color: #ff6767; }
-  label.password_label::after {
-    color: #000;
-    content: "를 입력해주세요"; }
-  label.passwordC_label::after {
-    color: #000;
-    content: "를 다시 입력해주세요"; }
-  label::after {
-    color: #000;
-    content: "을 입력해주세요"; }
+  color: #ff6767;
+}
+label.password_label::after {
+  color: #000;
+  content: "를 입력해주세요";
+}
+label.passwordC_label::after {
+  color: #000;
+  content: "를 다시 입력해주세요";
+}
+label::after {
+  color: #000;
+  content: "을 입력해주세요";
+}
 
 input {
   border: none;
@@ -62,13 +72,16 @@ input {
   width: 400px;
   margin-bottom: 32px;
   font-size: 20px;
-  font-weight: 500; }
-  input::placeholder {
-    font-weight: 500;
-    font-size: 20px;
-    color: #c2c2c2; }
-  input:focus {
-    outline: none; }
+  font-weight: 500;
+}
+input::placeholder {
+  font-weight: 500;
+  font-size: 20px;
+  color: #c2c2c2;
+}
+input:focus {
+  outline: none;
+}
 
 .submit {
   border: none;
@@ -81,9 +94,11 @@ input {
   line-height: 36px;
   letter-spacing: -0.01em;
   outline: none;
-  cursor: pointer; }
-  .submit:disabled {
-    cursor: default; }
+  cursor: pointer;
+}
+.submit:disabled {
+  cursor: default;
+}
 
 .back {
   position: relative;
@@ -96,6 +111,8 @@ input {
   line-height: 22px;
   letter-spacing: -0.06em;
   color: #000;
-  text-decoration: none; }
-  .back:visited {
-    color: #000; }
+  text-decoration: none;
+}
+.back:visited {
+  color: #000;
+}

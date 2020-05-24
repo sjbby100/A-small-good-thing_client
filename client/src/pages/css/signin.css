@@ -1,13 +1,4 @@
 @charset "UTF-8";
-body {
-  font-family: "Noto Sans KR", sans-serif;
-  margin: 0px;
-  padding: 0px;
-  background-color: #f5f8f9;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
 .container {
   display: grid;
   height: 100vh;
@@ -46,7 +37,7 @@ body {
   height: 100%;
 }
 
-h1 {
+.signin_greet {
   font-weight: 500;
   font-size: 26px;
   letter-spacing: -0.06em;
@@ -74,7 +65,7 @@ label::after {
   content: "을 입력해주세요";
 }
 
-input {
+.signin_input {
   border: none;
   background: none;
   height: 30px;
@@ -83,12 +74,12 @@ input {
   font-size: 20px;
   font-weight: 500;
 }
-input::placeholder {
+.signin_input ::placeholder {
   font-weight: 500;
   font-size: 20px;
   color: #c2c2c2;
 }
-input:focus {
+.signin_input :focus {
   outline: none;
 }
 
@@ -111,6 +102,7 @@ input:focus {
 
 .signin_back {
   position: relative;
+  color: #000;
   display: block;
   bottom: 54px;
   left: 56px;
