@@ -12,6 +12,7 @@ export const Input = ({ email, password, onChange }: valueProps) => {
       <div>
         <label>이메일</label>
         <input
+          className="signin_input"
           type="email"
           name="email"
           value={email}
@@ -22,6 +23,7 @@ export const Input = ({ email, password, onChange }: valueProps) => {
       <div>
         <label className="password_label">비밀번호</label>
         <input
+          className="signin_input"
           type="password"
           name="password"
           value={password}

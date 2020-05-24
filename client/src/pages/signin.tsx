@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import axios from "axios";
-import { connect } from "react-redux";
-import { Redirect, Link, RouteComponentProps } from "react-router-dom";
+
+import { Link, RouteComponentProps } from "react-router-dom";
 import * as SigninInput from "../components/signin_Input";
 import "../pages/css/signin.css";
 //* fake data
@@ -46,7 +46,7 @@ class Signin extends React.Component<Props, state> {
 
     if (vali_error === "" && Object.keys(errors).length === 0) {
       axios
-        .post("http://localhost:8080/login", {
+        .post("http://18.217.232.233:8080/login", {
           data: {
             email,
             password,
@@ -83,7 +83,7 @@ class Signin extends React.Component<Props, state> {
       <div className="container">
         <div className="signin_wrapper">
           <div className="textbox">
-            <h1>
+            <h1 className="signin_greet">
               안녕하세요. 굿띵은
               <br />
               로그인이 필요한 서비스 입니다.

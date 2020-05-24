@@ -14,7 +14,7 @@ interface values {
 }
 interface Props extends RouteComponentProps {}
 
-export default class extends React.Component<Props, values> {
+export default class Signup extends React.Component<Props, values> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -30,21 +30,17 @@ export default class extends React.Component<Props, values> {
     this.setState({ ...this.state, err });
   }
 
-  //실시간 유효성 검증 + 제출 유효성 검증 => 분리 필요 예상
   validate = (cur?: any): {} => {
-    let state;
-    cur ? (state = cur) : (state = { ...this.state });
+    let state = cur ? cur : { ...this.state };
     const { password: p, passwordCheck: pc, err: e } = state;
     let err = { ...e };
 
     for (let key in state) {
-      if (state[key] === "") {
-        err[key] = "empty" + key;
-      } else {
-        delete err[key];
-      }
-      if (key === "passwordCheck") {
-        if (p !== pc && p !== "") err[key] = "diffPassword";
+      state[key] === "" ? (err[key] = "empty" + key) : delete err[key];
+      key === "user_name" && delete err.submit;
+
+      if (key === "passwordCheck" && p !== "") {
+        if (p !== pc) err[key] = "diffPassword";
       }
     }
     return err;
@@ -52,54 +48,42 @@ export default class extends React.Component<Props, values> {
 
   handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
+    //! 에러가 있으면 버튼 클릭을 막아서 제출시 유효성 검증이 필요한지 의문
     let err = this.validate();
-    this.handlePost(err);
+    Object.keys(err).length === 0 && this.handlePost();
   };
 
-  handlePost = (err: any) => {
-    if (Object.keys(err).length === 0) {
-      console.log("%c에러가 없어요!!!", "color:orange");
-      // this.props.history.push("/signin");
-    } else {
-      console.table(err);
+  handlePost = async () => {
+    const { email, user_name: username, password } = this.state;
+    let url = "http://18.217.232.233:8080/signup";
+    let data = { email, username, password };
+    let opt = {
+      headers: { "content-type": "application/json" },
+    };
+
+    try {
+      const res = await axios.post(url, data, opt);
+      if (res.status === 200) {
+        this.props.history.push("/signin");
+      }
+    } catch ({ response: { status } }) {
+      if (status === 409) {
+        let err = { ...this.state.err, submit: "alreadyExistsEmail" };
+        this.setState({ ...this.state, err });
+        alert("이미 존재하는 이메일 입니다!!!!");
+      }
     }
-
-    const { email, user_name, password } = this.state;
-    axios
-      .post("http://localhost:8080/signup", {
-        data: {
-          email,
-          user_name,
-          password,
-        },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          this.props.history.push("/signin");
-        } else if (res.status === 409) {
-          let err = { ...this.state.err };
-          err.submit = "alreadyExistsEmail";
-          this.setState({ ...this.state, err });
-          alert("이미 존재하는 이메일 입니다!!!!");
-          console.log("%c회원가입에 실패하셨습니다!", "style:red");
-        }
-      });
   };
 
-  handleChange = ({ currentTarget }: any): void => {
-    const { value, name } = currentTarget;
-    let cur = { ...this.state };
-    cur[name] = value;
+  handleChange = ({ currentTarget: { value, name } }: any): void => {
+    let cur = { ...this.state, [name]: value };
     let err = this.validate(cur);
     this.setState({ ...cur, err });
   };
 
-  renderBtn = (): any => {
+  handleBtnAble = (): any => {
     const { err } = this.state;
-    if (Object.keys(err).length !== 0) {
-      return { disabled: true };
-    }
-    return { disabled: false };
+    return Object.keys(err).length !== 0 ? true : false;
   };
 
   renderInput = (values: values) => {
@@ -120,7 +104,13 @@ export default class extends React.Component<Props, values> {
   };
 
   render() {
-    const { handleSubmit, renderInput, state, renderBtn, handlePost } = this;
+    const {
+      handleSubmit,
+      renderInput,
+      state,
+      handleBtnAble,
+      handlePost,
+    } = this;
     return (
       <div className="container">
         <div className="wrapper">
@@ -135,7 +125,7 @@ export default class extends React.Component<Props, values> {
             <button
               className="submit"
               onClick={() => handlePost}
-              {...renderBtn()}
+              disabled={handleBtnAble()}
             >
               가입하기
             </button>
