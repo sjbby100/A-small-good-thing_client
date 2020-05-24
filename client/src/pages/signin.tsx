@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Redirect, Link, RouteComponentProps } from "react-router-dom";
 import * as SigninInput from "../components/signin_Input";
 import "../pages/css/signin.css";
+import rootReducer from "../modules/reducer";
+import { signin_Success } from "../modules/signin";
+
 //* fake data
 // import { fake } from "../services/fakeData";
-// todo [] error message 받는 방법 찾기
+
 interface state {
   email: string;
   password: string;
@@ -45,33 +48,32 @@ class Signin extends React.Component<Props, state> {
     console.log(this.state);
 
     if (vali_error === "" && Object.keys(errors).length === 0) {
-      axios
-        .post("http://localhost:8080/login", {
-          data: {
-            email,
-            password,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("%c 로그인 성공!", "color : green");
-            this.props.history.replace("/home");
-          } else if (res.status === 403) {
-            //! replace?
-            alert("이메일을 확인해주세요.");
-            this.props.history.replace("/signin");
-            // let err: number = res.status;
-            // this.setState({ ...this.state, err });
-            // console.log(this.state);
-            // console.log("%c 이메일을 확인해주세요.", "color:red");
-          } else if (res.status === 401) {
-            alert("비밀번호를 확인해주세요.");
-            this.props.history.replace("signin");
-            // let err: number = res.status;
-            // this.setState({ ...this.state, err });
-            // console.log("%c비밀번호를 확인해주세요.", "color:red");
-          }
-        });
+      let data = { email, password };
+      let opt = { headers: { "content-type": "application/json" } };
+      axios.post("http://18.217.232.233:8080/login", data, opt).then((res) => {
+        if (res.status === 200) {
+          //reducer
+          const Dispatch = useDispatch();
+          Dispatch(signin_Success(0, "test", "token"));
+
+          console.log("%c 로그인 성공!", "color : green");
+          this.props.history.replace("/home");
+        } else if (res.status === 403) {
+          //! replace?
+          alert("이메일을 확인해주세요.");
+          this.props.history.replace("/signin");
+          // let err: number = res.status;
+          // this.setState({ ...this.state, err });
+          // console.log(this.state);
+          // console.log("%c 이메일을 확인해주세요.", "color:red");
+        } else if (res.status === 401) {
+          alert("비밀번호를 확인해주세요.");
+          this.props.history.replace("signin");
+          // let err: number = res.status;
+          // this.setState({ ...this.state, err });
+          // console.log("%c비밀번호를 확인해주세요.", "color:red");
+        }
+      });
     }
   };
   render() {
