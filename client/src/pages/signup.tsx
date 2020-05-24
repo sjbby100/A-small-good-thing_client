@@ -54,9 +54,9 @@ export default class Signup extends React.Component<Props, values> {
   };
 
   handlePost = async () => {
-    const { email, user_name: username, password } = this.state;
+    const { email, user_name, password } = this.state;
     let url = "http://18.217.232.233:8080/signup";
-    let data = { email, username, password };
+    let data = { email, user_name, password };
     let opt = {
       headers: { "content-type": "application/json" },
     };
