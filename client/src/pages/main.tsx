@@ -9,14 +9,14 @@ import Card from "../common/monthlySum";
 // import Axios from "axios";
 import Search from "../common/search";
 import Filter from "../common/filter";
-const { signInSuccess } = response;
+import checker from "../services/util/urlCheck";
 const { items } = response.monthly_list;
 
 interface Props extends RouteComponentProps {}
 
 const Main: React.SFC<Props> = ({ history }) => {
   const { getItem, items_monthly, monthlySaved, SumAllMonthly } = useItems();
-  const { user_id, user_name, onLogin, onLogout } = useUserInfo();
+  const { user_id, user_name, onLogout } = useUserInfo();
   const [value, setValue] = useState("");
   const [orderBy, setOrderBy] = useState(["latest", "asc"]);
 
@@ -27,20 +27,16 @@ const Main: React.SFC<Props> = ({ history }) => {
     //   const { items } = res.monthly_list;
     //   getItem(items)
     // });
-    // onLogin(signInSuccess.respon);
-    // console.log(user_id, user_name);
-    getItem(items);
-
-    // monthlySaved === 0 && SumAllMonthly();
-  }, []);
+    if (user_id !== 0) getItem(items);
+  }, [user_id]);
   useEffect(() => {
-    SumAllMonthly();
+    if (user_id !== 0) SumAllMonthly();
   }, [items_monthly]);
 
   useEffect(() => {
-    {
-      checkUserId();
-    }
+    // {
+    //   checkUserId();
+    // }
   });
 
   const renderGreet = () => (
@@ -56,11 +52,14 @@ const Main: React.SFC<Props> = ({ history }) => {
   const numberWithCommas = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
   const checkUserId = () => {
     if (user_id === 0) {
       alert("로그인이 필요합니다!");
       history.replace("/login");
+      return false;
     }
+    return true;
   };
   const handleLogOut = () => {
     history.replace("/login");
@@ -87,7 +86,9 @@ const Main: React.SFC<Props> = ({ history }) => {
   };
   let filteredList = handleFilter(handleSeacrh(items_monthly, value));
   console.log(filteredList);
-  return (
+  return !checkUserId() ? (
+    <div>아이디가 필요합니다</div>
+  ) : (
     <div className="main_wrapper">
       <div className="main_grid">
         {renderGreet()}
@@ -104,7 +105,7 @@ const Main: React.SFC<Props> = ({ history }) => {
         <List items={filteredList} onFormat={numberWithCommas} />
         <div className="filterZone">
           {items_monthly && <Search onChange={setValue} />}
-          {items_monthly && <Filter onChange={setOrderBy} />}
+          {items_monthly && <Filter onChange={setOrderBy} orderBy={orderBy} />}
         </div>
       </div>
     </div>

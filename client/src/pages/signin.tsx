@@ -35,48 +35,34 @@ const Signin: React.FC<state> = ({ history }) => {
 
   //check =()=>{}
 
-  const handleSignin = (e: any) => {
+  const handleSignin = async (e: any) => {
     e.preventDefault();
     const { email, password, errors } = state;
     const { vali_error } = SigninInput.validateInput(password);
     console.log(state);
-
-    // Dispatch(signin_Success(0, "test", "token"));
-    // onLogin({ user_id: 1, user_name: "경태" });
-    // history.replace("/home");
-
     if (vali_error === "" && Object.keys(errors).length === 0) {
       let data = { email, password };
       let opt = {
         headers: { "content-type": "application/json" },
-        credentials: true,
+        // withCredentials: true,
       };
-      axios.post("http://18.217.232.233:8080/login", data, opt).then((res) => {
+      let url = "http://18.217.232.233:8080/login";
+      try {
+        const res = await axios.post(url, data, opt);
         if (res.status === 200) {
-          //reducer
-          // Dispatch(signin_Success(0, "test", "token"));
-          console.log(res);
-          // const{use}= res.data
-          // onLogin(res.data);
-
-          console.log("%c 로그인 성공!", "color : green");
-          // history.replace("/home");
-        } else if (res.status === 403) {
-          //! replace?
+          await onLogin(res.data);
+          await history.replace("/home");
+        }
+      } catch ({ response: { status } }) {
+        if (status === 403) {
           alert("이메일을 확인해주세요.");
           history.replace("/signin");
-          // let err: number = res.status;
-          // setState({ ...state, err });
-          // console.log(state);
-          // console.log("%c 이메일을 확인해주세요.", "color:red");
-        } else if (res.status === 401) {
+        }
+        if (status === 401) {
           alert("비밀번호를 확인해주세요.");
           history.replace("signin");
-          // let err: number = res.status;
-          // setState({ ...state, err });
-          // console.log("%c비밀번호를 확인해주세요.", "color:red");
         }
-      });
+      }
     }
   };
   const { email, password } = state;
