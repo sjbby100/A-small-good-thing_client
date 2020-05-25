@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Input } from "../common/input";
+import useItems from "../hooks/useItems";
 //: request에 해당 user_id, item_name, item_price, date 필수
 interface valueProps {
   user_id: number;
   item_name: string;
-  item_price: number;
+  item_price: string;
   //date: any;
   memo?: string;
   link?: string;
@@ -30,7 +31,7 @@ let newDate = () => {
 export const AddItem = ({ user_id }: any) => {
   const [state, setState] = useState({
     item_name: "",
-    item_price: 0,
+    item_price: "",
     memo: "",
     link: "",
     purchased: false,
@@ -38,7 +39,7 @@ export const AddItem = ({ user_id }: any) => {
     worry: 0,
   });
   const { item_name, item_price, memo, link, purchased, worry } = state;
-
+  const { getMonthlyItem, items_monthly } = useItems();
   const handleChange = ({ currentTarget }: any) => {
     const { value, name } = currentTarget;
     setState({
@@ -47,12 +48,12 @@ export const AddItem = ({ user_id }: any) => {
     });
   };
 
-  const validateItem = (item_name: string, item_price: number) => {
+  const validateItem = (item_name: string, item_price: string) => {
     let vali_error = "";
     if (item_name === "") {
       vali_error = "제품명을 입력해주세요";
     }
-    if (item_price === 0) {
+    if (item_price === "") {
       vali_error = "가격을 입력해주세요";
     }
     // if(date === ""){
@@ -69,7 +70,7 @@ export const AddItem = ({ user_id }: any) => {
       let data = {
         user_id,
         item_name,
-        item_price,
+        item_price: Number(item_price),
         memo,
         link,
         purchased,
@@ -84,7 +85,9 @@ export const AddItem = ({ user_id }: any) => {
       try {
         const res = await axios.post(url, data, opt);
         if (res.status === 201) {
-          //await history.replace("/home");
+          // await history.replace("/home");
+          // console.log(res);
+          getMonthlyItem([...items_monthly, res.data]);
           console.log("%c 아이템 추가 완료", "color: green");
         }
       } catch ({ response: { status } }) {

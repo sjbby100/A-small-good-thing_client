@@ -11,11 +11,13 @@ const List: React.SFC = () => {
     <div className="listpage_container">
       <div className="listpage_filter_zone"></div>
       <div className="listpage_items_modal">
-        <ListComponent
-          onFormat={onFormat}
-          items={items_monthly}
-          location="listpage"
-        />
+        <div className="listpage_items_slider">
+          <ListComponent
+            onFormat={onFormat}
+            items={items_monthly}
+            location="listpage"
+          />
+        </div>
       </div>
     </div>
   );

@@ -6,31 +6,49 @@ import useItems from "../hooks/useItems";
 import useUserInfo from "../hooks/useAuth";
 // import response from "../services/fakeData";
 import Card from "../common/monthlySum";
-import Axios from "axios";
+import axios from "axios";
 import Search from "../common/search";
 import Filter from "../common/filter";
 import onFormat from "../services/util/onFormat";
 import checker from "../services/util/urlCheck";
 import { AddItem } from "../components/add_Item";
-
+// let {
+//   monthly_list: { items },
+// } = response;
 interface Props extends RouteComponentProps {}
 
 const Main: React.SFC<Props> = ({ history }) => {
-  const { getItem, items_monthly, monthlySaved, SumAllMonthly } = useItems();
+  const {
+    getMonthlyItem,
+    items_monthly,
+    monthlySaved,
+    SumAllMonthly,
+  } = useItems();
   const { user_id, user_name, onLogout } = useUserInfo();
   const [value, setValue] = useState("");
   const [orderBy, setOrderBy] = useState(["latest", "asc"]);
 
   useEffect(() => {
-    // let url = "http://18.217.232.233:8080/mainpage";
-    // let data = user_id;
-    // Axios.get(url, data).then((res: any) => {
-    //   const { items } = res.monthly_list;
-    //   getItem(items);
-    // });
+    if (user_id !== 0) {
+      console.log(user_id, typeof user_id);
+      let url = `http://18.217.232.233:8080/monthly_list?user_id=${user_id}`;
+      axios
+        .get(url)
+        .then((res: any) => {
+          if (res.status === 201) {
+            const { items } = res.data.monthly_list;
+            getMonthlyItem(items);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
   useEffect(() => {
-    if (user_id !== 0) SumAllMonthly();
+    if (user_id !== 0) {
+      SumAllMonthly();
+    }
   }, [items_monthly]);
 
   useEffect(() => {
@@ -50,11 +68,11 @@ const Main: React.SFC<Props> = ({ history }) => {
   );
 
   const checkUserId = () => {
-    // if (user_id === 0) {
-    //   alert("로그인이 필요합니다!");
-    //   history.replace("/login");
-    //   return false;
-    // }
+    if (user_id === 0) {
+      alert("로그인이 필요합니다!");
+      history.replace("/login");
+      return false;
+    }
     return true;
   };
   const handleLogOut = () => {
