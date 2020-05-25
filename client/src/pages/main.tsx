@@ -10,6 +10,7 @@ import Card from "../common/monthlySum";
 import Search from "../common/search";
 import Filter from "../common/filter";
 import checker from "../services/util/urlCheck";
+import { AddItem } from "../components/add_Item";
 const { items } = response.monthly_list;
 
 interface Props extends RouteComponentProps {}
@@ -97,6 +98,7 @@ const Main: React.SFC<Props> = ({ history }) => {
             로그아웃
           </button>
         </div>
+        <AddItem user_id={user_id} />
         <Card
           sum={monthlySaved}
           user_name={user_name}

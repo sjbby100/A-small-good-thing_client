@@ -2,22 +2,37 @@ import React from "react";
 
 interface inputProps {
   name: string;
-  value: string;
+  value: string | number;
   onChange: any;
+  location: string;
 }
-export const Input = ({ name, value, onChange }: inputProps) => {
+export const Input = ({
+  name,
+  value,
+  onChange,
+  location = "signup",
+}: inputProps) => {
   const renderLable = (name: string) => {
     if (name === "email") return "이메일";
     if (name === "password") return "비밀번호";
     if (name === "user_name") return "이름";
     if (name === "passwordCheck") return "비밀번호";
+    if (name === "item_price") return "가격";
+    if (name === "memo") return "고민하는 이유";
+    if (name === "link") return "링크";
+    if (name === "item_name") return "제품명";
   };
   const renderPlaceHolder = (name: string) => {
     if (name === "email") return "gildong123@mail.com";
     if (name === "password") return "단순한 비밀번호는 피해주세요";
     if (name === "user_name") return "홍길동";
     if (name === "passwordCheck") return "비밀번호를 확인해주세요";
+    if (name === "item_price") return "가격";
+    if (name === "memo") return "고민하는 이유";
+    if (name === "link") return "링크";
+    if (name === "item_name") return "제품명";
   };
+
   const renderType = (name: string) => {
     if (name === "passwordCheck") return "password";
     else return name;
@@ -44,8 +59,8 @@ export const Input = ({ name, value, onChange }: inputProps) => {
         {renderLable(name)}
       </label>
       <input
-        className="signup_input"
-        type={renderType(name)}
+        className={`${location}_input`}
+        type={location === "signup" ? renderType(name) : "text"}
         name={name}
         onChange={onChange}
         value={value}

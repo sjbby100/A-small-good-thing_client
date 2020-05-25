@@ -91,6 +91,7 @@ const Signup: React.FC<state> = ({ history }) => {
             key={key}
             value={values[key]}
             onChange={handleChange}
+            location="signup"
           />,
         );
       }
