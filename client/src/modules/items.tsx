@@ -1,8 +1,8 @@
 export const ITEMS_GET = "ITEMS_GET" as const;
 export const ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT = "ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT" as const;
-export const getItems = (data: any) => ({
+export const getItems = (items: any) => ({
   type: ITEMS_GET,
-  payload: data,
+  payload: items,
 });
 
 export const sumAllSaved = () => ({
@@ -21,7 +21,7 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
     case ITEMS_GET:
       return {
         ...state,
-        items_monthly: [...state.items_monthly, ...action.payload],
+        items_monthly: [...action.payload],
       };
     case ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT:
       let mothlySaved = state.items_monthly.reduce(
