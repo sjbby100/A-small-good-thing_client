@@ -13,12 +13,10 @@ export const userLogout = () => ({
 type authState = {
   user_id: number;
   user_name: string;
-  // token: any;
 };
 const inintialAuthState: authState = {
   user_id: 0,
   user_name: "",
-  // token: null,
 };
 type authActions = ReturnType<typeof userLogin> | ReturnType<typeof userLogout>;
 
