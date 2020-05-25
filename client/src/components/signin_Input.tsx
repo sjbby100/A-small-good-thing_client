@@ -5,7 +5,6 @@ interface valueProps {
   onChange: any;
 }
 
-//! 왜 비밀번호를 안적어도 유효성 검사에서 통과할까??
 export const Input = ({ email, password, onChange }: valueProps) => {
   return (
     <div className="input">

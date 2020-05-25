@@ -39,7 +39,6 @@ const Signin: React.FC<state> = ({ history }) => {
     e.preventDefault();
     const { email, password, errors } = state;
     const { vali_error } = SigninInput.validateInput(password);
-    console.log(state);
     if (vali_error === "" && Object.keys(errors).length === 0) {
       let data = { email, password };
       let opt = {
