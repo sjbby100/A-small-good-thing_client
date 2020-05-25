@@ -10,7 +10,8 @@ import Axios from "axios";
 import Search from "../common/search";
 import Filter from "../common/filter";
 import onFormat from "../services/util/onFormat";
-// const { items } = response.monthly_list;
+import checker from "../services/util/urlCheck";
+import { AddItem } from "../components/add_Item";
 
 interface Props extends RouteComponentProps {}
 
@@ -94,6 +95,7 @@ const Main: React.SFC<Props> = ({ history }) => {
         </div>
         <Card sum={monthlySaved} user_name={user_name} onFormat={onFormat} />
         <List items={filteredList} onFormat={onFormat} />
+        <AddItem user_id={user_id} />
         <div className="filterZone">
           {items_monthly && <Search onChange={setValue} />}
           {items_monthly && <Filter onChange={setOrderBy} orderBy={orderBy} />}
