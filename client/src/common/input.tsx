@@ -52,6 +52,9 @@ export const Input = ({
     if (name === "password") {
       return { maxLength: 14, minLength: 8 };
     }
+    if (name === "item_price") {
+      return { maxLength: 10 };
+    }
   };
   return (
     <div>

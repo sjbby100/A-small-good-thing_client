@@ -69,7 +69,7 @@ export const AddItem = ({ user_id }: any) => {
       let data = {
         user_id,
         item_name,
-        item_price,
+        item_price: Number(item_price),
         memo,
         link,
         purchased,
@@ -102,7 +102,8 @@ export const AddItem = ({ user_id }: any) => {
         key === "item_name" ||
         key === "memo" ||
         key === "item_price" ||
-        key === "link"
+        key === "link" ||
+        key === "worry"
       ) {
         renderArr.push(
           <Input
@@ -119,17 +120,16 @@ export const AddItem = ({ user_id }: any) => {
   };
 
   return (
-    <div className="addItem">
-      <form onSubmit={handleAddItem} className="addItem" autoComplete="off">
-        {renderInput(state)}
-        {/* <div>
+    <form onSubmit={handleAddItem} className="addItem" autoComplete="off">
+      {renderInput(state)}
+      {/* <div>
         <label>날짜를 입력해주세요(기본값: 현재)</label>
         <input name="date" value={date} /> */}
-        {/*<div>
+      {/*<div>
         <button>이미지 넣기</button>
       </div> */}
-        <button className="addItem_button">추가</button>
-      </form>
-    </div>
+      <button className="addImg_button">이미지 넣기</button>
+      <button className="addItem_button">추가</button>
+    </form>
   );
 };
