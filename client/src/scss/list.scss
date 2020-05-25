@@ -1,6 +1,29 @@
 .listpage_container {
   position: absolute;
+  display: grid;
+  grid-template-columns: 280px 1fr;
   width: 100vw;
   height: 100vh;
-  background: #1f1f1f;
+}
+.listpage_filter_zone {
+}
+.listpage_list {
+  position: absolute;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  background: #fff;
+}
+
+.listpage_list_item {
+  position: relative;
+  top: 20vw;
+  width: 280px;
+  height: 320px;
+  background: #ffffff;
+  box-shadow: 8px 16px 16px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
 }

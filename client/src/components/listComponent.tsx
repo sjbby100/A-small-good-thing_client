@@ -8,7 +8,7 @@ const ListComponent: React.SFC<any> = ({
   const renderList = (items: any) => (
     <ul className={`${location}_list`}>
       {items.map((item: any) => (
-        <li key={item.item_id} className={`${location}_list_item`}>
+        <li key={`ITEM_${item.id}`} className={`${location}_list_item`}>
           <div className={`${location}_list_image`}></div>
           <h1 className={`${location}_list_name`}>{item.item_name}</h1>
           {item.memo && (
