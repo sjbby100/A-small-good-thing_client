@@ -1,7 +1,12 @@
 li {
   list-style: none;
 }
-
+input {
+  border: none;
+  border-style: none;
+  background: none;
+  // color: transparent;
+}
 .main_wrapper {
   position: absolute;
   width: 100vw;
@@ -25,7 +30,6 @@ li {
     color: #3e3e3e;
   }
   & h2 {
-    font-family: Noto Sans CJK KR;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -91,6 +95,9 @@ li {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
   border-radius: 12px 12px 0px 12px;
   padding-left: 12px;
+  outline: none;
+  border: none;
+  border-style: none;
   &:focus {
     box-shadow: 0 0 0 2px #ff7272;
   }
@@ -303,4 +310,67 @@ li {
   &:hover {
     color: #ff7272;
   }
+}
+.addItem {
+  position: relative;
+  width: 442px;
+  height: 444px;
+  grid-column: 2;
+  grid-row: 6/7;
+  background: #ffffff;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding-left: 24px;
+  padding-top: 24px;
+}
+.addItem label {
+  font-style: Medium;
+  font-size: 16px;
+  color: #000;
+}
+.addItem_input {
+  font-style: Medium;
+  font-size: 12px;
+  margin-bottom: 16px;
+  &:focus {
+    outline: none;
+  }
+}
+.addItem_input::placeholder {
+  font-style: Medium;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.06em;
+}
+.addImg_button {
+  position: absolute;
+  width: 139px;
+  height: 30px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  bottom: 25px;
+}
+.addItem_button {
+  position: absolute;
+  width: 80px;
+  height: 30px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 36px;
+  border: none;
+  background: none;
+  right: 43px;
+  bottom: 30px;
+  outline: none;
+  cursor: pointer;
 }
