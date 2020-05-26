@@ -1,24 +1,13 @@
 import React from "react";
 import useItems from "../hooks/useItems";
-const ListComponent: React.SFC<any> = ({
-  items,
-  onFormat,
-  location = "main",
-}: any) => {
+import Item from "../common/item";
+const ListComponent: React.SFC<any> = ({ items, location = "main" }: any) => {
   const { items_monthly } = useItems();
-  const renderList = (items: any) => (
+
+  const renderList = (items: any, location?: string) => (
     <ul className={`${location}_list`}>
       {items.map((item: any) => (
-        <li key={`ITEM_${item.id}`} className={`${location}_list_item`}>
-          <div className={`${location}_list_image`}></div>
-          <h1 className={`${location}_list_name`}>{item.item_name}</h1>
-          {item.memo && (
-            <h2 className={`${location}_list_memo`}>{item.memo}</h2>
-          )}
-          <h2 className={`${location}_list_price`}>
-            {`${onFormat(item.item_price)}원`}
-          </h2>
-        </li>
+        <Item item={item} location={location} />
       ))}
     </ul>
   );
@@ -39,7 +28,7 @@ const ListComponent: React.SFC<any> = ({
     <React.Fragment>
       {items_monthly.length === 0 && location === "main"
         ? renderEmptyList()
-        : renderList(items)}
+        : renderList(items, location)}
     </React.Fragment>
   );
 };

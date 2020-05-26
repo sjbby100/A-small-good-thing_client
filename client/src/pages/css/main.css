@@ -1,3 +1,4 @@
+@charset "UTF-8";
 li {
   list-style: none;
 }
@@ -16,11 +17,8 @@ input {
 
 .main_grid {
   display: grid;
-  grid-template-columns:
-    minmax(80px, 3fr) minmax(200px, 424px) minmax(20px, 1fr)
-    minmax(320px, 480px) minmax(80px, 3fr);
-  grid-template-rows: 8vh 200px 32px 48px 32px 1fr;
-}
+  grid-template-columns: minmax(80px, 3fr) minmax(200px, 424px) minmax(20px, 1fr) minmax(320px, 480px) minmax(80px, 3fr);
+  grid-template-rows: 8vh 200px 32px 48px 32px 1fr; }
 
 .greet {
   grid-column: 2/3;
@@ -323,7 +321,7 @@ input {
 .addItem {
   display: none;
   position: relative;
-  width: 442px;
+  width: 100%;
   height: 444px;
   grid-column: 2;
   grid-row: 6/7;
@@ -332,15 +330,15 @@ input {
   border-radius: 16px;
   padding-left: 24px;
   padding-top: 24px;
-  overflow: scroll;
-}
+  overflow: scroll; }
+
 .addItem_Click {
   font-style: Medium;
   font-size: 20px;
   text-align: left;
   display: block;
   position: relative;
-  width: 442px;
+  width: 100%;
   height: 103px;
   grid-column: 2;
   grid-row: 6/7;
@@ -351,36 +349,38 @@ input {
   padding-top: 24px;
   outline: none;
   cursor: pointer;
-  border: none;
-}
+  border: none; }
+
 .innerBox {
-  padding-bottom: 25px;
-}
+  padding-bottom: 25px; }
+
 .addItem label {
   font-style: Medium;
   font-size: 16px;
-  color: #000;
-}
+  color: #000; }
+
 label.worry::after {
   color: #000;
-  content: "를 입력해주세요";
-}
+  content: "를 입력해주세요"; }
+
 label.memo::after {
   color: #000;
-  content: "를 입력해주세요";
-}
+  content: "를 입력해주세요"; }
+
 label.worry::after {
   color: #000;
-  content: "를 입력해주세요";
-}
+  content: "를 입력해주세요"; }
+
 .addItem_input {
   font-style: Medium;
   font-size: 12px;
+
   margin-bottom: 16px;
 }
 .addItem_input:focus {
   outline: none;
 }
+
 
 .addItem_input::placeholder {
   font-style: Medium;
@@ -402,8 +402,8 @@ label.worry::after {
   border: none;
   background: none;
   cursor: pointer;
-  outline: none;
-}
+  outline: none; }
+
 .addItem_button {
   position: relative;
   width: 100px;
@@ -416,6 +416,7 @@ label.worry::after {
   background: none;
   outline: none;
   cursor: pointer;
+
   float: right;
 }
 

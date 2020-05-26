@@ -8,10 +8,13 @@ import Card from "../common/monthlySum";
 import axios from "axios";
 import Search from "../common/search";
 import Filter from "../common/filter";
-import onFormat from "../services/util/onFormat";
-import checker from "../services/util/urlCheck";
+import util from "../services/util/index";
 import { AddItem } from "../components/add_Item";
+
 import { ItemModal } from "../components/modal";
+
+const { onFormat, onSearch, onOrder, validUserId } = util;
+
 interface Props extends RouteComponentProps {}
 
 const Main: React.SFC<Props> = ({ history }) => {
@@ -22,77 +25,72 @@ const Main: React.SFC<Props> = ({ history }) => {
     SumAllMonthly,
     itemStoreInit,
   } = useItems();
-  const { user_id, user_name, onLogout } = useUserInfo();
-  const [value, setValue] = useState("");
+  const { user_id, user_name, onLogout, onLogin } = useUserInfo();
+  const [state, setState] = useState({
+    value: "",
+  });
   const [orderBy, setOrderBy] = useState(["latest", "asc"]);
 
   useEffect(() => {
-    if (user_id !== 0) {
-      console.log(user_id, typeof user_id);
-      let url = `http://18.217.232.233:8080/monthly_list?user_id=${user_id}`;
-      axios
-        .get(url)
-        .then((res: any) => {
-          if (res.status === 201) {
-            const { items } = res.data.monthly_list;
-            getMonthlyItem(items);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (user_id === 0) {
+      console.log("뭐지?");
+      validUserId(vaildUserSucess, validUserFailed);
+    } else {
+      console.log("음..?");
+      requestMonthlyItem(user_id);
     }
   }, []);
+
   useEffect(() => {
-    if (user_id !== 0) {
-      SumAllMonthly();
-    }
+    user_id !== 0 && SumAllMonthly();
   }, [items_monthly]);
 
   useEffect(() => {
-    // {
-    //   checkUserId();
-    // }
-  });
+    user_id > 0 && user_id !== undefined && requestMonthlyItem(user_id);
+  }, [user_id]);
+
+  // const validUserId = async () => {
+  //   let url = "http://18.217.232.233:8080/login";
+  //   let opt = {
+  //     headers: { "content-type": "application/json" },
+  //     withCredentials: true,
+  //   };
+  //   try {
+  //     let res = await axios.post(url, {}, opt);
+  //     console.log(res);
+  //     res.status === 200 && (await onLogin(res.data));
+  //     res.status === 302 && console.log("문제는 아니다");
+  //   } catch ({ response: { status } }) {
+  //     if (status === 404) {
+  //       alert("login이 필요합니다!");
+  //       history.replace("/login");
+  //     }
+  //   }
+  // };
+  const vaildUserSucess = (res: any) => onLogin(res.data);
+  const validUserFailed = () => history.replace("/login");
+
+  const requestMonthlyItem = async (user_id: number) => {
+    let url = `http://18.217.232.233:8080/monthly_list?user_id=${user_id}`;
+    try {
+      let res = await axios.get(url);
+      res.status === 201 && getMonthlyItem(res.data.monthly_list.items);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const renderGreet = () => (
     <div className="greet">
-      <h1> 안녕하세요. {user_name}님</h1>
+      <h1> 안녕하세요.</h1>
+      <br />
+      <h1> {user_name}님</h1>
       <h2>
         공수래 공수거. 빈손으로 와서 <br />
         빈손으로 가는거니까 끌리는건 구매하세요!
       </h2>
     </div>
   );
-
-  const checkUserId = () => {
-    if (user_id === 0) {
-      // alert("로그인이 필요합니다!");
-      history.replace("/login");
-      return false;
-    }
-    return true;
-  };
-  const handleSeacrh = (items: any, value: string) => {
-    if (value !== "") {
-      let query: string = value.trim();
-      let filtered = items.filter(({ item_name }: any) =>
-        item_name.startsWith(query),
-      );
-      return filtered;
-    } else {
-      return items;
-    }
-  };
-  const handleFilter = (items: any) => {
-    let orderValue = orderBy[0] === "latest" ? "id" : "item_price";
-    return items.sort((a: any, b: any) => {
-      return orderBy[1] === "asc"
-        ? a[orderValue] - b[orderValue]
-        : b[orderValue] - a[orderValue];
-    });
-  };
-
   const handleItemInput = () => {
     //!react dom 사용
     let target: any = document.querySelector(".addItem");
@@ -100,19 +98,24 @@ const Main: React.SFC<Props> = ({ history }) => {
     target.style.display = "block";
     target2.style.display = "none";
   };
+
   const handleLogOut = async () => {
     let url = `http://18.217.232.233:8080/logout`;
-    let res = await axios.post(url, { user_id });
+    let opt = {
+      headers: { "content-type": "application/json" },
+      withCredentials: true,
+    };
+    let res = await axios.post(url, { user_id }, opt);
     if (res.status === 200) {
       itemStoreInit();
       onLogout();
-      // history.replace("/signin");
+      history.replace("/signin");
     }
   };
-  let filteredList = handleFilter(handleSeacrh(items_monthly, value));
-  console.log(filteredList);
 
-  return !checkUserId() ? (
+  let filteredList = onOrder(onSearch(items_monthly, state.value), orderBy);
+
+  return user_id === 0 ? (
     <div>아이디가 필요합니다</div>
   ) : (
     <div className="main_wrapper">
@@ -137,7 +140,7 @@ const Main: React.SFC<Props> = ({ history }) => {
         </div>
         <AddItem user_id={user_id} />
         <div className="filterZone">
-          <Search onChange={setValue} />
+          <Search onChange={setState} state={state} />
           <Filter onChange={setOrderBy} orderBy={orderBy} />
           <Link to="/listpage" className="main_link_listpage">
             리스트 전체보기

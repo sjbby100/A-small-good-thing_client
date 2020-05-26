@@ -85,6 +85,7 @@ label::after {
 
 .submit {
   border: none;
+  background: none;
   position: absolute;
   right: 40px;
   bottom: 28px;
