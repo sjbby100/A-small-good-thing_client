@@ -1,10 +1,11 @@
 import React from "react";
-
+import useItems from "../hooks/useItems";
 const ListComponent: React.SFC<any> = ({
   items,
   onFormat,
   location = "main",
 }: any) => {
+  const { items_monthly } = useItems();
   const renderList = (items: any) => (
     <ul className={`${location}_list`}>
       {items.map((item: any) => (
@@ -36,7 +37,7 @@ const ListComponent: React.SFC<any> = ({
   };
   return (
     <React.Fragment>
-      {items.length === 0 && location === "main"
+      {items_monthly.length === 0 && location === "main"
         ? renderEmptyList()
         : renderList(items)}
     </React.Fragment>

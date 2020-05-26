@@ -1,10 +1,15 @@
 import React from "react";
 
-const Search = ({ onChange }: any) => {
+interface searchProps {
+  onChange: Function;
+  location?: string;
+}
+
+const Search = ({ onChange, location = "main" }: searchProps) => {
   return (
     <input
       type="text"
-      className="main_search"
+      className={`${location}_search`}
       onChange={({ target }) => onChange(target.value)}
       placeholder="검색"
     />

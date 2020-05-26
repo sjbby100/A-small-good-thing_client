@@ -11,7 +11,8 @@ const monthlySum = ({ sum, user_name, onFormat }: props) => {
     sum: number,
   ): JSX.Element => {
     let text: string = "";
-    if (sum > 300000) text = `굉장한데요! ${user_name}님`;
+    if (sum >= 100000000) text = `지금 거짓으로 작성하셨쬬?`;
+    else if (sum > 300000) text = `굉장한데요! ${user_name}님`;
     else if (sum > 200000) text = `대단한데요! ${user_name}님`;
     else if (sum > 100000) text = `좋아요! ${user_name}님`;
     else if (sum === 0) text = `천천히 시작해봐요 ${user_name}님`;
