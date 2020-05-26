@@ -2,24 +2,25 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Input } from "../common/input";
 import useItems from "../hooks/useItems";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 //: request에 해당 user_id, item_name, item_price, date 필수
 interface valueProps {
   user_id: number;
   item_name: string;
   item_price: string;
-  //date: any;
+  date: any;
   memo?: string;
   link?: string;
   purchased?: boolean;
-  worry?: number;
+  worry?: string;
   category_id?: number;
   //image_id?: number;
   onChange: any;
 }
 
-let newDate = () => {
-  //yyyy-mm-dd
-  let date = new Date();
+let newDate = (date: Date) => {
+  //? yyyy-mm-dd
   let year: number = date.getFullYear();
   let month: any = date.getMonth() + 1;
   month = month >= 10 ? month : "0" + month;
@@ -35,8 +36,8 @@ export const AddItem = ({ user_id }: any) => {
     memo: "",
     link: "",
     purchased: false,
-    date: "2020-05-25",
-    worry: 0,
+    date: new Date(),
+    worry: "",
   });
   const { item_name, item_price, memo, link, purchased, worry } = state;
   const { getMonthlyItem, items_monthly } = useItems();
@@ -47,7 +48,8 @@ export const AddItem = ({ user_id }: any) => {
       [name]: value,
     });
   };
-
+  //! validate - 문자입력 방지  isnan
+  //! util- 1000단위 , 입력 , 보낼때는 , 지워서 보내기
   const validateItem = (item_name: string, item_price: string) => {
     let vali_error = "";
     if (item_name === "") {
@@ -64,7 +66,6 @@ export const AddItem = ({ user_id }: any) => {
 
   const handleAddItem = async (e: any) => {
     e.preventDefault();
-
     const { vali_error } = validateItem(item_name, item_price);
     if (vali_error == "") {
       let data = {
@@ -74,8 +75,8 @@ export const AddItem = ({ user_id }: any) => {
         memo,
         link,
         purchased,
-        worry,
-        date: newDate(),
+        worry: Number(worry),
+        date: newDate(state.date),
       };
       console.log(data);
       let opt = {
@@ -122,15 +123,25 @@ export const AddItem = ({ user_id }: any) => {
     return renderArr;
   };
 
+  const dateChange = (date: any) => {
+    setState({
+      ...state,
+      date: date,
+    });
+  };
+
   return (
-    <form onSubmit={handleAddItem} className="addItem" autoComplete="off">
-      {renderInput(state)}
-      {/* <div>
+    <form
+      onSubmit={handleAddItem}
+      style={{ display: "none" }}
+      className="addItem"
+      autoComplete="off"
+    >
+      <div className="innerBox">
+        {renderInput(state)}
         <label>날짜를 입력해주세요(기본값: 현재)</label>
-        <input name="date" value={date} /> */}
-      {/*<div>
-        <button>이미지 넣기</button>
-      </div> */}
+        <DatePicker selected={state.date} onChange={dateChange} />
+      </div>
       <button className="addImg_button">이미지 넣기</button>
       <button className="addItem_button">추가</button>
     </form>

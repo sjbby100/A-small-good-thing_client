@@ -10,8 +10,11 @@ li {
 
 .main_grid {
   display: grid;
-  grid-template-columns: minmax(80px, 3fr) minmax(200px, 424px) minmax(20px, 1fr) minmax(320px, 480px) minmax(80px, 3fr);
-  grid-template-rows: 8vh 200px 32px 48px 32px 1fr; }
+  grid-template-columns:
+    minmax(80px, 3fr) minmax(200px, 424px) minmax(20px, 1fr)
+    minmax(320px, 480px) minmax(80px, 3fr);
+  grid-template-rows: 8vh 200px 32px 48px 32px 1fr;
+}
 
 .greet {
   grid-column: 2/3;
@@ -310,31 +313,64 @@ li {
 }
 
 .addItem {
+  display: none;
   position: relative;
   width: 442px;
   height: 444px;
   grid-column: 2;
-  grid-row: 3/6;
+  grid-row: 6/7;
   background: #ffffff;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.04);
   border-radius: 16px;
   padding-left: 24px;
   padding-top: 24px;
+  overflow: scroll;
+}
+.addItem_Click {
+  font-style: Medium;
+  font-size: 20px;
+  text-align: left;
+  display: block;
+  position: relative;
+  width: 442px;
+  height: 103px;
+  grid-column: 2;
+  grid-row: 6/7;
+  background: #ffffff;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding-left: 24px;
+  padding-top: 24px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+.innerBox {
+  padding-bottom: 25px;
 }
 .addItem label {
-  font-family: Noto Sans CJK KR;
   font-style: Medium;
   font-size: 16px;
   color: #3e3e3e;
 }
+label.worry::after {
+  color: #000;
+  content: "를 입력해주세요";
+}
+label.memo::after {
+  color: #000;
+  content: "를 입력해주세요";
+}
+label.worry::after {
+  color: #000;
+  content: "를 입력해주세요";
+}
 .addItem_input {
-  font-family: Noto Sans CJK KR;
   font-style: Medium;
   font-size: 12px;
   margin-bottom: 16px;
 }
 .addItem_input::placeholder {
-  font-family: Noto Sans CJK KR;
   font-style: Medium;
   font-style: normal;
   font-weight: normal;
@@ -343,11 +379,9 @@ li {
   letter-spacing: -0.06em;
 }
 .addImg_button {
-  position: absolute;
+  position: relative;
   width: 139px;
   height: 30px;
-  font-family: Noto Sans CJK KR;
-  font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
@@ -356,21 +390,18 @@ li {
   background: none;
   cursor: pointer;
   outline: none;
-  bottom: 25px;
 }
 .addItem_button {
-  position: absolute;
-  width: 80px;
+  position: relative;
+  width: 100px;
   height: 30px;
-  font-family: Noto Sans CJK KR;
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 36px;
   border: none;
   background: none;
-  right: 43px;
-  bottom: 30px;
   outline: none;
   cursor: pointer;
+  float: right;
 }
