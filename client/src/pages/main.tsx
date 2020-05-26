@@ -92,6 +92,14 @@ const Main: React.SFC<Props> = ({ history }) => {
         : b[orderValue] - a[orderValue];
     });
   };
+
+  const handleItemInput = () => {
+    //!react dom 사용
+    let target: any = document.querySelector(".addItem");
+    let target2: any = document.querySelector(".addItem_Click");
+    target.style.display = "block";
+    target2.style.display = "none";
+
   const handleLogOut = async () => {
     let url = `http://18.217.232.233:8080/logout`;
     let res = await axios.post(url, { user_id });
@@ -100,6 +108,7 @@ const Main: React.SFC<Props> = ({ history }) => {
       onLogout();
       // history.replace("/signin");
     }
+
   };
   let filteredList = handleFilter(handleSeacrh(items_monthly, value));
   console.log(filteredList);
@@ -117,6 +126,13 @@ const Main: React.SFC<Props> = ({ history }) => {
         </div>
         <Card sum={monthlySaved} user_name={user_name} onFormat={onFormat} />
         <List items={filteredList} onFormat={onFormat} />
+        <button
+          className="addItem_Click"
+          style={{ display: "block" }}
+          onClick={() => handleItemInput()}
+        >
+          입력하기
+        </button>
         <AddItem user_id={user_id} />
         <div className="filterZone">
           <Search onChange={setValue} />

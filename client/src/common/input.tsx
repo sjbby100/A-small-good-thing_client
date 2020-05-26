@@ -21,6 +21,7 @@ export const Input = ({
     if (name === "memo") return "고민하는 이유";
     if (name === "link") return "링크";
     if (name === "item_name") return "제품명";
+    if (name === "worry") return "고민하는 정도";
   };
   const renderPlaceHolder = (name: string) => {
     if (name === "email") return "gildong123@mail.com";
@@ -31,6 +32,7 @@ export const Input = ({
     if (name === "memo") return "고민하는 이유";
     if (name === "link") return "링크";
     if (name === "item_name") return "제품명";
+    if (name === "worry") return "0~5를 입력해주세요";
   };
 
   const renderType = (name: string) => {
@@ -43,6 +45,15 @@ export const Input = ({
     }
     if (name === "passwordCheck") {
       return "passwordC_label";
+    }
+    if (name === "memo") {
+      return "memo";
+    }
+    if (name === "link") {
+      return "link";
+    }
+    if (name === "worry") {
+      return "worry";
     }
   };
   const handleLength = (name: string) => {
