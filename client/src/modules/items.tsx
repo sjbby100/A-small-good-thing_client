@@ -1,4 +1,5 @@
 export const ITEMS_GET = "MONTHLY_ITEMS_GET" as const;
+export const ITEMS_STORE_INIT = "ITEM_STORE_INIT" as const;
 export const ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT = "ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT" as const;
 export const getMonthlyItems = (items: any) => ({
   type: ITEMS_GET,
@@ -8,7 +9,9 @@ export const getMonthlyItems = (items: any) => ({
 export const sumAllSaved = () => ({
   type: ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT,
 });
-
+export const itemsInit = () => ({
+  type: ITEMS_STORE_INIT,
+});
 const initialItemState: any = {
   items_total: [],
   items_monthly: [],
@@ -17,8 +20,8 @@ const initialItemState: any = {
 
 type ItemsAction =
   | ReturnType<typeof getMonthlyItems>
-  | ReturnType<typeof sumAllSaved>;
-
+  | ReturnType<typeof sumAllSaved>
+  | ReturnType<typeof itemsInit>;
 const reducer = (state = initialItemState, action: ItemsAction) => {
   switch (action.type) {
     case ITEMS_GET:
@@ -32,6 +35,8 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
         0,
       );
       return { ...state, mothlySaved };
+    case ITEMS_STORE_INIT:
+      return { ...initialItemState };
     default:
       return state;
   }
