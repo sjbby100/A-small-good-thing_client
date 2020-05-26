@@ -72,6 +72,7 @@ label::after {
   width: 400px;
   margin-bottom: 32px;
   font-size: 20px;
+  outline: none;
   font-weight: 500;
 }
 .signin_input ::placeholder {
@@ -96,6 +97,7 @@ label::after {
   letter-spacing: -0.01em;
   outline: none;
   cursor: pointer;
+  background: none;
 }
 .submit:disabled {
   cursor: default;

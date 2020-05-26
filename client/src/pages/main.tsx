@@ -11,6 +11,8 @@ import Filter from "../common/filter";
 import util from "../services/util/index";
 import { AddItem } from "../components/add_Item";
 
+import { ItemModal } from "../components/modal";
+
 const { onFormat, onSearch, onOrder, validUserId } = util;
 
 interface Props extends RouteComponentProps {}
@@ -133,6 +135,9 @@ const Main: React.SFC<Props> = ({ history }) => {
         >
           입력하기
         </button>
+        <div className="modal">
+          <ItemModal />
+        </div>
         <AddItem user_id={user_id} />
         <div className="filterZone">
           <Search onChange={setState} state={state} />
