@@ -11,7 +11,7 @@ import Filter from "../common/filter";
 import onFormat from "../services/util/onFormat";
 import checker from "../services/util/urlCheck";
 import { AddItem } from "../components/add_Item";
-
+import { ItemModal } from "../components/modal";
 interface Props extends RouteComponentProps {}
 
 const Main: React.SFC<Props> = ({ history }) => {
@@ -99,7 +99,7 @@ const Main: React.SFC<Props> = ({ history }) => {
     let target2: any = document.querySelector(".addItem_Click");
     target.style.display = "block";
     target2.style.display = "none";
-
+  };
   const handleLogOut = async () => {
     let url = `http://18.217.232.233:8080/logout`;
     let res = await axios.post(url, { user_id });
@@ -108,7 +108,6 @@ const Main: React.SFC<Props> = ({ history }) => {
       onLogout();
       // history.replace("/signin");
     }
-
   };
   let filteredList = handleFilter(handleSeacrh(items_monthly, value));
   console.log(filteredList);
@@ -133,6 +132,9 @@ const Main: React.SFC<Props> = ({ history }) => {
         >
           입력하기
         </button>
+        <div className="modal">
+          <ItemModal />
+        </div>
         <AddItem user_id={user_id} />
         <div className="filterZone">
           <Search onChange={setValue} />
