@@ -1,21 +1,91 @@
 .listpage_container {
-  position: absolute;
+  position: relative;
   display: grid;
   grid-template-columns: 280px 1fr;
-  grid-template-rows: 48px 48px 48px 1fr;
+  grid-template-rows: 32px 48px 48px 1fr;
   background-color: #f5f8f9;
   width: 100vw;
   height: 100vh; }
 
+.listpage_search_zone {
+  position: relative;
+  width: 600px;
+  left: 10vw;
+  margin-left: 40px;
+  grid-row: 2/3;
+  grid-column: 2/3; }
+
+.listpage_search {
+  width: 200px;
+  height: 48px;
+  border-radius: 8px;
+  background: #ffffff;
+  border-radius: 12px 12px 0px 12px;
+  padding-left: 12px;
+  outline: none;
+  border: 2px solid #ff7272;
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.08); }
+  .listpage_search:focus {
+    outline: none; }
+  .listpage_search::placeholder {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.06em;
+    color: #7a7a7a; }
+
+.listpage_filter_box {
+  display: inline-block;
+  position: absolute;
+  left: 232px;
+  top: 2px;
+  width: 160px;
+  height: 48px;
+  border: 2px solid #a3a3a3;
+  border-radius: 8px;
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.08); }
+
+.listpage_filter {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  border: 0px;
+  border-radius: 0px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 21px;
+  letter-spacing: -0.07em;
+  color: #020202; }
+
+.listpage_filter_order_btn {
+  position: absolute;
+  width: 24px;
+  height: 20px;
+  border: none;
+  right: 16px;
+  top: 8px;
+  transform: rotate(180deg); }
+  .listpage_filter_order_btn:focus {
+    outline: none; }
+
 .listpage_items_modal {
   position: relative;
+  grid-row: 1/5;
+  grid-column: 2/3;
   background-color: #fff;
   box-shadow: -3px 0px 32px rgba(0, 0, 0, 0.08);
   border-radius: 16px 0 0 16px; }
 
 .listpage_list {
   position: relative;
-  top: 10vh;
+  top: 12vh;
   left: 10vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

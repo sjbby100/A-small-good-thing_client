@@ -1,4 +1,4 @@
-export const handleSeacrh = (items: any, value: string) => {
+const handleSeacrh = (items: any, value: string) => {
   if (value !== "") {
     let query: string = value.trim();
     let filtered = items.filter(({ item_name }: any) =>
@@ -9,3 +9,4 @@ export const handleSeacrh = (items: any, value: string) => {
     return items;
   }
 };
+export default handleSeacrh;

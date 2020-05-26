@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import { Link, RouteComponentProps } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import * as SigninInput from "../components/signin_Input";
 import "../pages/css/signin.css";
-// import rootReducer from "../modules/reducer";
+import util from "../services/util";
+const { validUserId } = util;
 //* fake data
-// import { fake } from "../services/fakeData";
 
 interface state extends RouteComponentProps {
   email: string;
@@ -23,7 +23,22 @@ const Signin: React.FC<state> = ({ history }) => {
     err: null, //전처리
     errors: {}, //보관소
   });
-  let { onLogin } = useAuth();
+  let { onLogin, user_id } = useAuth();
+
+  useEffect(() => {
+    if (user_id === 0) {
+      console.log("뭐지?");
+      validUserId(vaildUserIdSuccess);
+    } else {
+      console.log("세션이 있습니다.");
+    }
+  }, []);
+
+  const vaildUserIdSuccess = async (res: any) => {
+    await onLogin(res.data);
+    history.replace("/home");
+  };
+
   const handleChange = ({ currentTarget }: any) => {
     //email 변경
     const { value, name } = currentTarget;
@@ -32,8 +47,6 @@ const Signin: React.FC<state> = ({ history }) => {
       [name]: value,
     });
   };
-
-  //check =()=>{}
 
   const handleSignin = async (e: any) => {
     e.preventDefault();
