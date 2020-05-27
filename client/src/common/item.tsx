@@ -28,8 +28,8 @@ const Item: React.SFC<Props> = ({
     return style;
   };
   const handleBtnClickEvent = (item?: any) => {
-    isEditable && handleEdit && handleEdit();
-    !isEditable && handleClick(item);
+    isEditable && handleEdit && handleEdit(item.id);
+    isEditable === false && handleClick(item);
   };
 
   return (
