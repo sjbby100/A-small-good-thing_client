@@ -23,17 +23,34 @@ const initialState = {
   purchased: false,
   date: new Date(),
   worry: "",
+  img: Image,
 };
 export const AddItem = ({ user_id }: any) => {
   const [state, setState] = useState(initialState);
   const { item_name, item_price, memo, link, purchased, worry } = state;
   const { getMonthlyItem, items_monthly } = useItems();
+
+  // * img 업로드 관련
+  const [img, setImage] = useState({ fileName: "", filePath: "" });
+  const [content, setContent] = useState('');
+
+  const handleImg = (e: any) => {
+    setImage(e.target.files[0]);
+  };
+  const onSubmit = (e:any) =>{
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("img", content);
+    const url:string = 'http://asmallgoodthing.s3-website.ap-northeast-2.amazonaws.com/'
+    //axios.post(url, formdata)
+  }
+
   const handleChange = ({ currentTarget }: any) => {
     const { value, name } = currentTarget;
-    if (name === item_price) {
+    if (name === "item_price") {
       setState({
         ...state,
-        [item_price]: onFormat(Number(value)),
+        [name]: onFormat(Number(value.replace(/[^-\.0-9]/g, ""))),
       });
     } else {
       setState({
@@ -57,14 +74,18 @@ export const AddItem = ({ user_id }: any) => {
     return { vali_error };
   };
 
+  const toRealNum = (str: any) => {
+    return Number(str.replace(/,/gi, ""));
+  };
+  
   const handleAddItem = async (e: any) => {
     e.preventDefault();
     const { vali_error } = validateItem(item_name, item_price);
-    if (vali_error == "") {
+    if (vali_error === "") {
       let data = {
         user_id,
         item_name,
-        item_price: Number(item_price),
+        item_price: toRealNum(item_price),
         memo,
         link,
         purchased,
@@ -141,11 +162,13 @@ export const AddItem = ({ user_id }: any) => {
     >
       <div className="innerBox">
         {renderInput(state)}
-        // todo 수정 필요
         <label>날짜</label>
         <DatePicker selected={state.date} onChange={dateChange} />
       </div>
-      <button className="addImg_button">이미지 넣기</button>
+      <div
+      <button className="addImg_button" onChange={handleImg}>
+        이미지 넣기
+      </button>
       <button className="addItem_button">추가</button>
     </form>
   );
