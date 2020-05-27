@@ -28,7 +28,12 @@ const Main: React.SFC<Props> = ({ history }) => {
   const { user_id, user_name, onLogout, onLogin } = useUserInfo();
   const [state, setState] = useState({
     value: "",
+    curItem: {}, //item 하나의 객체,
   });
+  const handleItemClick = ({ id }: any) => {
+    let curItem = items_monthly.filter((item: any) => item.id === id);
+    setState({ ...state, curItem });
+  };
   const [orderBy, setOrderBy] = useState(["latest", "asc"]);
 
   useEffect(() => {
@@ -49,24 +54,6 @@ const Main: React.SFC<Props> = ({ history }) => {
     user_id > 0 && user_id !== undefined && requestMonthlyItem(user_id);
   }, [user_id]);
 
-  // const validUserId = async () => {
-  //   let url = "http://18.217.232.233:8080/login";
-  //   let opt = {
-  //     headers: { "content-type": "application/json" },
-  //     withCredentials: true,
-  //   };
-  //   try {
-  //     let res = await axios.post(url, {}, opt);
-  //     console.log(res);
-  //     res.status === 200 && (await onLogin(res.data));
-  //     res.status === 302 && console.log("문제는 아니다");
-  //   } catch ({ response: { status } }) {
-  //     if (status === 404) {
-  //       alert("login이 필요합니다!");
-  //       history.replace("/login");
-  //     }
-  //   }
-  // };
   const vaildUserSucess = (res: any) => onLogin(res.data);
   const validUserFailed = () => history.replace("/login");
 
@@ -127,7 +114,11 @@ const Main: React.SFC<Props> = ({ history }) => {
           </button>
         </div>
         <Card sum={monthlySaved} user_name={user_name} onFormat={onFormat} />
-        <List items={filteredList} onFormat={onFormat} />
+        <List
+          items={filteredList}
+          onFormat={onFormat}
+          handleClick={handleItemClick}
+        />
         <button
           className="addItem_Click"
           style={{ display: "block" }}

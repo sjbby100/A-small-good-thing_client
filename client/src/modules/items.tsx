@@ -31,7 +31,8 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
       };
     case ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT:
       let mothlySaved = state.items_monthly.reduce(
-        (acc: number, { item_price }: any) => (acc += item_price),
+        (acc: number, { item_price, puchased }: any) =>
+          !puchased && (acc += item_price),
         0,
       );
       return { ...state, mothlySaved };

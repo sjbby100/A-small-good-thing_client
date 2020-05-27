@@ -1,13 +1,26 @@
 import React from "react";
 import useItems from "../hooks/useItems";
 import Item from "../common/item";
-const ListComponent: React.SFC<any> = ({ items, location = "main" }: any) => {
+
+const ListComponent: React.SFC<any> = ({
+  items,
+  location = "main",
+  isEditable,
+  handleClick,
+  handleEdit,
+}: any) => {
   const { items_monthly } = useItems();
 
   const renderList = (items: any, location?: string) => (
     <ul className={`${location}_list`}>
       {items.map((item: any) => (
-        <Item item={item} location={location} />
+        <Item
+          item={item}
+          location={location}
+          isEditable={isEditable}
+          handleEdit={handleEdit && handleEdit}
+          handleClick={handleClick}
+        />
       ))}
     </ul>
   );
