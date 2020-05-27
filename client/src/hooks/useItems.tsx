@@ -4,7 +4,8 @@ import {
   getMonthlyItems,
   sumAllSaved,
   itemsInit,
-  puchasedItem,
+  purchasedItem,
+  deletedItem,
 } from "../modules/items";
 import { useCallback } from "react";
 
@@ -35,10 +36,17 @@ export default function useItems() {
   }, [dispatch]);
   const purchaseItem = useCallback(
     (item_id) => {
-      dispatch(puchasedItem(item_id));
+      dispatch(purchasedItem(item_id));
     },
     [dispatch],
   );
+  const deleteItem = useCallback(
+    (item_id) => {
+      dispatch(deletedItem(item_id));
+    },
+    [dispatch],
+  );
+
   return {
     items_total,
     itemStoreInit,
@@ -47,5 +55,6 @@ export default function useItems() {
     monthlySaved,
     SumAllMonthly,
     purchaseItem,
+    deleteItem,
   };
 }

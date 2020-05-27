@@ -2,6 +2,8 @@ export const ITEMS_GET = "MONTHLY_ITEMS_GET" as const;
 export const ITEMS_STORE_INIT = "ITEM_STORE_INIT" as const;
 export const ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT = "ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT" as const;
 export const ITEMS_PURCHASED = " ITEMS_PURCHASED" as const;
+export const ITEMS_DELETE = "ITEMS_DELETE" as const;
+// export const LIST_DELETE = "LEST_DELETE" as const;
 export const getMonthlyItems = (items: any) => ({
   type: ITEMS_GET,
   payload: items,
@@ -13,12 +15,24 @@ export const sumAllSaved = () => ({
 export const itemsInit = () => ({
   type: ITEMS_STORE_INIT,
 });
-export const puchasedItem = (item_id: number) => ({
+export const purchasedItem = (item_id: number) => ({
   type: ITEMS_PURCHASED,
   payload: {
     item_id,
   },
 });
+export const deletedItem = (item_id: number) => ({
+  type: ITEMS_DELETE,
+  payload: {
+    item_id,
+  },
+});
+// export const deletedList = (item_id: number) => ({
+//   type: LIST_DELETE,
+//   payload: {
+//     item_id,
+//   },
+// });
 const initialItemState: any = {
   items_total: [],
   items_monthly: [],
@@ -29,7 +43,9 @@ type ItemsAction =
   | ReturnType<typeof getMonthlyItems>
   | ReturnType<typeof sumAllSaved>
   | ReturnType<typeof itemsInit>
-  | ReturnType<typeof puchasedItem>;
+  | ReturnType<typeof purchasedItem>
+  | ReturnType<typeof deletedItem>;
+// | ReturnType<typeof deletedList>;
 
 const reducer = (state = initialItemState, action: ItemsAction) => {
   switch (action.type) {
@@ -40,8 +56,13 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
       };
     case ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT:
       let mothlySaved = state.items_monthly.reduce(
-        (acc: number, { item_price, puchased }: any) =>
-          !puchased && (acc += item_price),
+        (acc: number, { item_price, purchased }: any) => {
+          if (purchased === false) {
+            return (acc += item_price);
+          } else {
+            return acc;
+          }
+        },
         0,
       );
       return { ...state, mothlySaved };
@@ -53,8 +74,17 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
           ? { ...item, purchased: true }
           : item,
       );
-
       return { ...state, items_monthly };
+    case ITEMS_DELETE:
+      let deleted_monthly = state.items_monthly.filter(
+        (item: any) => item.id !== action.payload.item_id,
+      );
+      return { ...state, items_monthly: [...deleted_monthly] };
+    //   case LIST_DELETE:
+    //     let deleted_list = state.items_total.filter(
+    //       (item: any) => item.id !== action.payload.item_id,
+    //     );
+    //     return { ...state, items_total: [...deleted_list] };
     default:
       return state;
   }
