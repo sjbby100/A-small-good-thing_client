@@ -55,7 +55,7 @@
   position: absolute;
   left: 232px;
   top: 0px;
-  width: 160px;
+  width: 140px;
   height: 50px;
   border: 2px solid #a3a3a3;
   border-radius: 8px;
@@ -96,7 +96,7 @@
 }
 .listpage_editmode_btn {
   position: relative;
-  left: 196px;
+  left: 172px;
   width: 80px;
   height: 54px;
   background: none;
@@ -145,10 +145,11 @@
   margin-bottom: 60px;
   position: relative;
   width: 280px;
-  height: 296px;
+  height: 292px;
   background: #ffffff;
-  box-shadow: 9px 16px 64px rgba(0, 0, 0, 0.11);
+  box-shadow: 9px 16px 64px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
+  cursor: pointer;
 }
 .listpage_list_image {
   position: relative;
@@ -202,8 +203,8 @@
 }
 .listpage_page_group {
   position: absolute;
-  bottom: 7vh;
-  left: 12.5vw;
+  bottom: 6.5vh;
+  left: 12.7vw;
 }
 .listpage_page {
   display: inline-block;
@@ -211,7 +212,7 @@
   width: 32px;
   height: 32px;
   text-align: center;
-  border: 2px solid #7e7e7e;
+  border: 2px solid #595959;
   box-sizing: border-box;
   border-radius: 4px;
   cursor: pointer;
