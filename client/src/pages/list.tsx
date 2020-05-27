@@ -7,6 +7,7 @@ import ListComponent from "../components/listComponent";
 import Search from "../common/search";
 import Filter from "../common/filter";
 import util from "../services/util/index";
+import ItemModal from "../components/item_modal";
 import "./css/list.css";
 
 const { onFormat, onOrder, onSearch, validUserId } = util;
@@ -21,6 +22,7 @@ const List: React.SFC<props> = ({ history }) => {
     isEditable: false,
     multiSelect: {},
     value: "",
+    curItem: {},
   });
 
   //온클릭시 아이템 id를 배열에 넣음
@@ -103,6 +105,7 @@ const List: React.SFC<props> = ({ history }) => {
   const handleClick = ({ id }: any) => {
     console.log(id);
     let curItem = items_monthly.filter((item: any) => item.id === id);
+    curItem = { ...curItem[0] };
     setState({ ...state, curItem });
   };
 
@@ -119,6 +122,7 @@ const List: React.SFC<props> = ({ history }) => {
   };
   return (
     <div className="listpage_container">
+      <ItemModal item={state.curItem} onClose={setState} state={state} />
       <div className="listpage_filter_zone"></div>
       {/* box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.08); */}
       <div className="listpage_items_modal">

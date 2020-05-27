@@ -30,11 +30,13 @@ const Item: React.SFC<Props> = ({
   const handleBtnClickEvent = (item?: any) => {
     isEditable && handleEdit && handleEdit(item.id);
     isEditable === false && handleClick(item);
+    isEditable === undefined && handleClick(item);
   };
-
+  const handlePurchasedItemStlye = () => {
+    return item.purchased === true ? { textDecoration: "line-through" } : {};
+  };
   return (
     <li
-      key={item.id}
       className={`${location}_list_item`}
       onClick={() => handleBtnClickEvent(item)}
       style={renderDeletableItem(item)}
@@ -42,7 +44,10 @@ const Item: React.SFC<Props> = ({
       <div className={`${location}_list_image`}></div>
       <h1 className={`${location}_list_name`}>{item.item_name}</h1>
       {item.memo && <h2 className={`${location}_list_memo`}>{item.memo}</h2>}
-      <h2 className={`${location}_list_price`}>
+      <h2
+        className={`${location}_list_price`}
+        style={handlePurchasedItemStlye()}
+      >
         {`${onFormat(item.item_price)}원`}
       </h2>
     </li>
