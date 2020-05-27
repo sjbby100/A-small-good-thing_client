@@ -122,7 +122,16 @@ export const AddItem = ({ user_id }: any) => {
             date: new Date(),
             worry: "",
           });
-          getMonthlyItem([...items_monthly, res.data]);
+          console.log(
+            data.date.slice(5, 7),
+            String("0" + (new Date().getMonth() + 1)),
+          );
+          if (
+            data.date.slice(5, 7) === String("0" + (new Date().getMonth() + 1))
+          ) {
+            getMonthlyItem([...items_monthly, res.data]);
+          }
+
           console.log("%c 아이템 추가 완료", "color: green");
         }
       } catch ({ response: { status } }) {

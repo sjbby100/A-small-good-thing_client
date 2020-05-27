@@ -11,7 +11,6 @@ import Filter from "../common/filter";
 import util from "../services/util/index";
 import { AddItem } from "../components/add_Item";
 import ItemModal from "../components/item_modal";
-
 const { onFormat, onSearch, onOrder, validUserId } = util;
 
 interface Props extends RouteComponentProps {}
@@ -24,25 +23,26 @@ const Main: React.SFC<Props> = ({ history }) => {
     SumAllMonthly,
     itemStoreInit,
   } = useItems();
+
   const { user_id, user_name, onLogout, onLogin } = useUserInfo();
   const [state, setState] = useState({
     value: "",
     curItem: {}, //item 하나의 객체,
   });
+
   const handleItemClick = ({ id }: any) => {
     let curItem = items_monthly.filter((item: any) => item.id === id);
     curItem = { ...curItem[0] };
     console.log(curItem);
     setState({ ...state, curItem });
   };
+
   const [orderBy, setOrderBy] = useState(["latest", "asc"]);
 
   useEffect(() => {
     if (user_id === 0) {
-      console.log("뭐지?");
       validUserId(vaildUserSucess, validUserFailed);
     } else {
-      console.log("음..?");
       requestMonthlyItem(user_id);
     }
   }, []);
@@ -79,8 +79,8 @@ const Main: React.SFC<Props> = ({ history }) => {
       </h2>
     </div>
   );
+
   const handleItemInput = () => {
-    //!react dom 사용
     let target: any = document.querySelector(".addItem");
     let target2: any = document.querySelector(".addItem_Click");
     target.style.display = "block";
