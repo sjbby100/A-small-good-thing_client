@@ -38,7 +38,7 @@ export const Input = ({
 
   const renderType = (name: string) => {
     if (name === "passwordCheck") return "password";
-    if (name === "item_price" || name === "worry") return "number";
+    if (name === "worry") return "number";
     if (name === "link") return "url";
     else return name;
   };
@@ -67,7 +67,7 @@ export const Input = ({
       return { maxLength: 14, minLength: 8 };
     }
     if (name === "item_price") {
-      return { maxLength: 10 };
+      return { maxLength: 15 };
     }
   };
   return (
@@ -78,10 +78,7 @@ export const Input = ({
       <input
         className={`${location}_input`}
         type={
-          location === "signup" ||
-          name === "item_price" ||
-          name === "worry" ||
-          name === "link"
+          location === "signup" || name === "worry" || name === "link"
             ? renderType(name)
             : "text"
         }

@@ -11,7 +11,7 @@ import Filter from "../common/filter";
 import util from "../services/util/index";
 import { AddItem } from "../components/add_Item";
 
-import { ItemModal } from "../components/modal";
+import { ItemModal } from "../components/item_modal";
 
 const { onFormat, onSearch, onOrder, validUserId } = util;
 
@@ -114,7 +114,6 @@ const Main: React.SFC<Props> = ({ history }) => {
   };
 
   let filteredList = onOrder(onSearch(items_monthly, state.value), orderBy);
-
   return user_id === 0 ? (
     <div>아이디가 필요합니다</div>
   ) : (
@@ -136,7 +135,7 @@ const Main: React.SFC<Props> = ({ history }) => {
           입력하기
         </button>
         <div className="modal">
-          <ItemModal />
+          <ItemModal item={/** 클릭한 것의 id */} />
         </div>
         <AddItem user_id={user_id} />
         <div className="filterZone">
