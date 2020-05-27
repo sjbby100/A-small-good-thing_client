@@ -22,6 +22,9 @@
 .listpage_search {
   width: 200px;
   height: 48px;
+  position: relative;
+  top: -2px;
+  // top: 10px;
   // margin-right: 20px;
   border-radius: 8px;
   background: #ffffff;
@@ -32,10 +35,10 @@
   // border: none;
   // border-style: none;
 
-  border: 2px solid #ff7272;
-  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.08);
+  border: 2px solid #a3a3a3;
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.06);
   &:focus {
-    outline: none;
+    border: 2px solid #ff7272;
   }
 
   &::placeholder {
@@ -51,12 +54,12 @@
   display: inline-block;
   position: absolute;
   left: 232px;
-  top: 2px;
+  top: 0px;
   width: 160px;
-  height: 48px;
+  height: 50px;
   border: 2px solid #a3a3a3;
   border-radius: 8px;
-  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.06);
 }
 .listpage_filter {
   position: absolute;
@@ -75,7 +78,7 @@
   line-height: 21px;
 
   letter-spacing: -0.07em;
-
+  cursor: pointer;
   color: #020202;
 }
 .listpage_filter_order_btn {
@@ -86,6 +89,32 @@
   right: 16px;
   top: 8px;
   transform: rotate(180deg);
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+.listpage_editmode_btn {
+  position: relative;
+  left: 196px;
+  width: 80px;
+  height: 54px;
+  background: none;
+  border: 2px solid #a3a3a3;
+  box-sizing: border-box;
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height */
+
+  letter-spacing: -0.07em;
+
+  color: #4f4848;
+  cursor: pointer;
   &:focus {
     outline: none;
   }
@@ -102,7 +131,7 @@
 
 .listpage_list {
   position: relative;
-  top: 12vh;
+  top: 13vh;
   left: 10vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -116,9 +145,9 @@
   margin-bottom: 60px;
   position: relative;
   width: 280px;
-  height: 320px;
+  height: 296px;
   background: #ffffff;
-  box-shadow: 8px 16px 64px rgba(0, 0, 0, 0.08);
+  box-shadow: 9px 16px 64px rgba(0, 0, 0, 0.11);
   border-radius: 16px;
 }
 .listpage_list_image {
@@ -170,4 +199,23 @@
   letter-spacing: -0.06em;
 
   color: #606060;
+}
+.listpage_page_group {
+  position: absolute;
+  bottom: 7vh;
+  left: 12.5vw;
+}
+.listpage_page {
+  display: inline-block;
+  margin-right: 16px;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border: 2px solid #7e7e7e;
+  box-sizing: border-box;
+  border-radius: 4px;
+  cursor: pointer;
+
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
 }
