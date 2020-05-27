@@ -226,6 +226,7 @@ input {
   margin-bottom: 40px;
   background-color: #fcfcfc;
   border-radius: 16px;
+  cursor: pointer;
   //   margin-bottom: 24px;
 }
 .main_list_image {
@@ -268,13 +269,13 @@ input {
   font-size: 20px;
   line-height: 30px;
   letter-spacing: -0.06em;
-  //   justify-content: center;
   margin: 0px;
   color: #5c5c5c;
 }
 .main_list_memo {
   position: relative;
   top: 48px;
+  height: 30px;
   display: inline-block;
   grid-column: 3/4;
   grid-row: 1/2;

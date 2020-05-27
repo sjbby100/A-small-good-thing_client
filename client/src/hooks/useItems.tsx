@@ -1,6 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../modules/reducer";
-import { getMonthlyItems, sumAllSaved, itemsInit } from "../modules/items";
+import {
+  getMonthlyItems,
+  sumAllSaved,
+  itemsInit,
+  puchasedItem,
+} from "../modules/items";
 import { useCallback } from "react";
 
 export default function useItems() {
@@ -13,7 +18,9 @@ export default function useItems() {
   const items_total = useSelector(
     (state: RootState) => state.items.items_total,
   );
+
   const dispatch = useDispatch();
+
   const getMonthlyItem = useCallback(
     (items: any) => {
       dispatch(getMonthlyItems(items));
@@ -26,6 +33,12 @@ export default function useItems() {
   const itemStoreInit = useCallback(() => {
     dispatch(itemsInit());
   }, [dispatch]);
+  const purchaseItem = useCallback(
+    (item_id) => {
+      dispatch(puchasedItem(item_id));
+    },
+    [dispatch],
+  );
   return {
     items_total,
     itemStoreInit,
@@ -33,5 +46,6 @@ export default function useItems() {
     getMonthlyItem,
     monthlySaved,
     SumAllMonthly,
+    purchaseItem,
   };
 }

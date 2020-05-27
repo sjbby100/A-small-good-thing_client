@@ -15,6 +15,7 @@ const ListComponent: React.SFC<any> = ({
     <ul className={`${location}_list`}>
       {items.map((item: any) => (
         <Item
+          key={item.id}
           item={item}
           location={location}
           isEditable={isEditable}

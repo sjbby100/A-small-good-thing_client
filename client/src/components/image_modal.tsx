@@ -82,18 +82,5 @@ export const ItemModal = (props: any) => {
       }
     }
   };
-  return (
-    <div>
-      <button onClick={openModal}>Open Modal</button>
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        </form>
-      </Modal>
-    </div>
-  );
+  return <div></div>;
 };

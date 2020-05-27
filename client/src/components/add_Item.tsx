@@ -32,18 +32,19 @@ export const AddItem = ({ user_id }: any) => {
 
   // * img 업로드 관련
   const [img, setImage] = useState({ fileName: "", filePath: "" });
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
 
   const handleImg = (e: any) => {
     setImage(e.target.files[0]);
   };
-  const onSubmit = (e:any) =>{
+  const onSubmit = (e: any) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("img", content);
-    const url:string = 'http://asmallgoodthing.s3-website.ap-northeast-2.amazonaws.com/'
+    const url: string =
+      "http://asmallgoodthing.s3-website.ap-northeast-2.amazonaws.com/";
     //axios.post(url, formdata)
-  }
+  };
 
   const handleChange = ({ currentTarget }: any) => {
     const { value, name } = currentTarget;
@@ -77,7 +78,7 @@ export const AddItem = ({ user_id }: any) => {
   const toRealNum = (str: any) => {
     return Number(str.replace(/,/gi, ""));
   };
-  
+
   const handleAddItem = async (e: any) => {
     e.preventDefault();
     const { vali_error } = validateItem(item_name, item_price);
@@ -165,11 +166,12 @@ export const AddItem = ({ user_id }: any) => {
         <label>날짜</label>
         <DatePicker selected={state.date} onChange={dateChange} />
       </div>
-      <div
-      <button className="addImg_button" onChange={handleImg}>
-        이미지 넣기
-      </button>
-      <button className="addItem_button">추가</button>
+      <div>
+        <button className="addImg_button" onChange={handleImg}>
+          이미지 넣기
+        </button>
+        <button className="addItem_button">추가</button>
+      </div>
     </form>
   );
 };
