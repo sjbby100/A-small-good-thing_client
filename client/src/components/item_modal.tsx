@@ -15,16 +15,13 @@ const customStyles = {
   },
 };
 
-//? 모달을 사용할 곳을 입력
 Modal.setAppElement("body");
 
-// todo state받아오기
 const ItemModal = ({ item, onClose, state }: any) => {
-  //! 변경은 스토어로<!DOCTYPE html>
-  // const [purchased, setPurchased] = useState(item.purchased);
-
+  let [currentItem, setCurrentItem] = useState(state.curItem);
   const [modalIsOpen, setIsOpen] = useState(false);
   const { purchaseItem } = useItems();
+  const { deleteItem } = useItems();
   const openModal = () => {
     setIsOpen(true);
   };
@@ -36,14 +33,18 @@ const ItemModal = ({ item, onClose, state }: any) => {
   useEffect(() => {
     Object.keys(item).length > 0 && openModal();
   }, [state]);
-  // todo 구매하기 : 링크로 연결
-  // const handleLink = () => {
-  //   return;
-  // };
-  // todo 구매완료 : setState purchased true
+
+  //* link연결
+  const handleLink = () => {
+    console.log(item.link);
+    if (item.link.length === 0) {
+      alert("링크가 없습니다.");
+    } else {
+      return window.open(item.link, "_blank");
+    }
+  };
+  // todo 구매완료 : 체크박스
   const handlePurchased = async () => {
-    // ! 현재 상태 구매로 바꿔주기
-    // ! post 보내기
     let data = {
       //? 지은님과 상의 후 간략하게 수정 가능 할 것 으로 예상
       user_id: item.user_id,
@@ -57,39 +58,41 @@ const ItemModal = ({ item, onClose, state }: any) => {
     };
     purchaseItem(item.id);
 
-    // let opt = { headers: { "content-type": "application/json" } };
-    // let url = `http://18.217.232.233:8080/item?item_id=${item.item_id}`;
-    // try {
-    //   const res = await axios.post(url, data, opt);
-    //   if (res.status === 201) {
-    //     //console.log(res.body);
-    //     // Todo resbody로 상태 변경
-    //     //새로고침? 카드 삭제?
-    //   }
-    // } catch ({ response: { status } }) {
-    //   if (status === 404) {
-    //     alert("해당 아이템이 없습니다.");
-    //   }
-    // }
-  };
-  // todo 수정하기 : 어려울듯 .. 제일 마지막에
-  // todo 삭제하기 : axios post /delete data={userid, item id}
-  const deleteItem = async () => {
-    let data = { user_id: item.userid, image_id: item.image_id };
-    console.log(data);
-    let opt = {
-      headers: { "content-type": "application/json" },
-    };
-    let url = `http://18.217.232.233:8080/item?item_id=${item.item_id}`;
+    let opt = { headers: { "content-type": "application/json" } };
+    let url = `http://18.217.232.233:8080/item?item_id=${item.id}`;
     try {
-      const res = await axios.post(url, data, opt);
-      if (res.status === 202) {
-        console.log("delete item");
-        //! 상태변화
+      const res = await axios.patch(url, data, opt);
+      if (res.status === 201) {
+        console.log("구매하기로 변경");
       }
     } catch ({ response: { status } }) {
       if (status === 404) {
         alert("해당 아이템이 없습니다.");
+      }
+    }
+  };
+  // todo 수정하기 : 어려울듯 .. 제일 마지막에
+  const editItem = async () => {};
+
+  // todo 삭제하기 : 상태변화
+  const handleDelete = async () => {
+    if (window.confirm("해당 아이템을 삭제하시겠습니까?")) {
+      let url = `http://18.217.232.233:8080/item?item_id=${item.id}`;
+      try {
+        const res = await axios.delete(url, {
+          headers: { "content-type": "application/json" },
+          data: { user_id: item.user_id, image_id: null },
+        });
+        if (res.status === 202) {
+          console.log("delete item");
+          deleteItem(item.id);
+          onClose({ ...state, curItem: {} });
+          setIsOpen(false);
+        }
+      } catch ({ response: { status } }) {
+        if (status === 404) {
+          alert("해당 아이템이 없습니다.");
+        }
       }
     }
   };
@@ -111,14 +114,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
         <div>{`${onFormat(Number(item.item_price))}원`}</div>
         <form>
           <input />
-          <a
-            className="modal_link"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="http://www.naver.com"
-          >
-            구매하기
-          </a>
         </form>
         <button
           onClick={() => {
@@ -127,8 +122,9 @@ const ItemModal = ({ item, onClose, state }: any) => {
         >
           구매완료
         </button>
+        <button onClick={handleLink}>구매하기</button>
         <button>수정하기</button>
-        <button onClick={deleteItem}>삭제하기</button>
+        <button onClick={handleDelete}>삭제하기</button>
         <button onClick={closeModal}>닫기</button>
       </Modal>
     </div>

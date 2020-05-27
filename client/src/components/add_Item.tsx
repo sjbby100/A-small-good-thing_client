@@ -31,19 +31,25 @@ export const AddItem = ({ user_id }: any) => {
   const { getMonthlyItem, items_monthly } = useItems();
 
   // * img 업로드 관련
-  const [img, setImage] = useState({ fileName: "", filePath: "" });
+  // const [uploadedImg, setUploadedImg] = useState({
+  //   fileName: "",
+  //   filePath: "",
+  // });
   const [content, setContent] = useState("");
 
   const handleImg = (e: any) => {
-    setImage(e.target.files[0]);
+    console.log(e.target.files);
+    setContent(e.target.files[0]);
   };
-  const onSubmit = (e: any) => {
-    e.preventDefault();
+
+  const handleUpload = async () => {
+    //e.preventDefault();
     const formData = new FormData();
     formData.append("img", content);
-    const url: string =
-      "http://asmallgoodthing.s3-website.ap-northeast-2.amazonaws.com/";
-    //axios.post(url, formdata)
+    const url: string = "http://18.217.232.233:8080/image";
+    const opt: any = { headers: { encType: "multipart/form-data" } };
+    let res = await axios.post(url, formData, opt);
+    console.log(res);
   };
 
   const handleChange = ({ currentTarget }: any) => {
@@ -51,7 +57,7 @@ export const AddItem = ({ user_id }: any) => {
     if (name === "item_price") {
       setState({
         ...state,
-        [name]: onFormat(Number(value.replace(/[^-\.0-9]/g, ""))),
+        [name]: onFormat(Number(value.replace(/[^\.0-9]/g, ""))),
       });
     } else {
       setState({
@@ -83,6 +89,9 @@ export const AddItem = ({ user_id }: any) => {
     e.preventDefault();
     const { vali_error } = validateItem(item_name, item_price);
     if (vali_error === "") {
+      //* 이미지 전송
+      handleUpload();
+      //* 아이템 정보 전송
       let data = {
         user_id,
         item_name,
@@ -102,6 +111,7 @@ export const AddItem = ({ user_id }: any) => {
       try {
         const res = await axios.post(url, data, opt);
         if (res.status === 201) {
+          //! 이미지 전송
           setState({
             ...state,
             item_name: "",
@@ -165,20 +175,21 @@ export const AddItem = ({ user_id }: any) => {
 
   return (
     <form
-      onSubmit={handleAddItem}
       style={{ display: "none" }}
       className="addItem"
       autoComplete="off"
+      action="/upload"
+      method="post"
+      encType="multipart/form-data"
+      onSubmit={handleAddItem}
     >
       <div className="innerBox">
         {renderInput(state)}
         <label>날짜</label>
         <DatePicker selected={state.date} onChange={dateChange} />
       </div>
+      <input type="file" name="imgFile" onChange={handleImg}></input>
       <div>
-        <button className="addImg_button" onChange={handleImg}>
-          이미지 넣기
-        </button>
         <button className="addItem_button">추가</button>
       </div>
     </form>
