@@ -89,10 +89,11 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
       return { ...state, mothlySaved };
     case ITEMS_STORE_INIT:
       return { ...initialItemState };
+
     case ITEMS_PURCHASED:
       let items_monthly = state.items_monthly.map((item: any) =>
         item.id === action.payload.item_id
-          ? { ...item, purchased: true }
+          ? { ...item, purchased: item.purchased === true ? false : true }
           : item,
       );
       return { ...state, items_monthly };
