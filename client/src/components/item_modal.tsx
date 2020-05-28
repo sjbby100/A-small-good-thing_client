@@ -220,6 +220,7 @@ const ItemModal = ({ item, onClose, state }: any) => {
             <h2>등록일자</h2>
             {editMode === true ? editDate() : viewDate()}
           </>
+
         </form>
         <button
           onClick={() => {

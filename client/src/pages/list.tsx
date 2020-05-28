@@ -10,24 +10,18 @@ import Filter from "../common/filter";
 import util from "../services/util/index";
 import ItemModal from "../components/item_modal";
 import arrow from "../img/arrow.svg";
+import Loader from "../common/loader";
 import "./css/list.css";
-import { url } from "inspector";
 
 const { onFormat, onOrder, onSearch, validUserId } = util;
 
 interface props extends RouteComponentProps {}
 
 const List: React.SFC<props> = ({ history }) => {
-  let {
-    items_total,
-    getMonthlyItem,
-    getTotalyItem,
-    items_monthly,
-    multiDelete,
-  } = useItems();
+  let { items_total, getTotalyItem, multiDelete } = useItems();
 
   let [state, setState] = useState<any>({
-    viewDateOption: "2020-05",
+    viewDateOption: "",
     curPage: 1,
     pageSize: 6,
     isEditable: false,
@@ -36,28 +30,26 @@ const List: React.SFC<props> = ({ history }) => {
     curItem: {},
     curItems: [],
   });
+  let [isLoaded, setLoaded] = useState(false);
 
   const { user_id, onLogin } = useAuth();
 
   let [orderBy, setOrderBy] = useState(["latest", "asc"]);
 
   useEffect(() => {
-    handleDate();
     if (user_id === 0) {
       validUserId(vaildUserSucess, validUserFailed);
     } else {
-      requestMonthlyItem(user_id);
+      requestTotalItem(user_id);
     }
   }, []);
 
   useEffect(() => {
-    user_id > 0 && user_id !== undefined && requestMonthlyItem(user_id);
+    user_id > 0 && user_id !== undefined && requestTotalItem(user_id);
   }, [user_id]);
 
   useEffect(() => {
-    state.curItems.length === 0
-      ? handleCurItem(items_monthly, state.viewDateOption)
-      : handleCurItem(items_total, state.viewDateOption);
+    handleCurItem(items_total, state.viewDateOption);
   }, [state.viewDateOption]);
 
   const handleDate = () => {
@@ -68,29 +60,20 @@ const List: React.SFC<props> = ({ history }) => {
     let viewDateOption = year + "-" + month;
     setState({ ...state, viewDateOption });
   };
-  const requestMonthlyItem = async (user_id: number) => {
-    let url = `http://18.217.232.233:8080/monthly_list?user_id=${user_id}`;
-    try {
-      const res = await axios.get(url);
-      const { items } = res.data.monthly_list;
-      res.status === 201 && (await getMonthlyItem(items));
-      await handleCurItem(items, state.viewDateOption);
-    } catch (err) {
-
-    } finally {
-      requestTotalItem(user_id);
-    }
-  };
 
   const requestTotalItem = async (user_id: number) => {
     let url = `http://18.217.232.233:8080/total_list?user_id=${user_id}`;
     try {
       let res = await axios.get(url);
+      const { items } = res.data.total_list;
+      res.status === 201 && getTotalyItem(items);
+      await handleCurItem(items, state.viewDateOption);
 
-      res.status === 201 && getTotalyItem(res.data.total_list.items);
-    } catch (err) {
-
-    }
+      setTimeout(() => {
+        setLoaded(true);
+      }, 1250);
+      // setLoaded(true);
+    } catch (err) {}
   };
 
   const handleCurItem = (targetItems: any, dateOption: "") => {
@@ -192,9 +175,7 @@ const List: React.SFC<props> = ({ history }) => {
         );
         setState({ ...state, curItems: items, multiSelect: {} });
       }
-    } catch (err) {
-
-    }
+    } catch (err) {}
   };
 
   const handleViewOption = (date: string) => {
@@ -260,7 +241,13 @@ const List: React.SFC<props> = ({ history }) => {
     setState({ ...state, curItems: items_total, viewDateOption: "" });
   };
   const handleMonthlyViewBtn = () => {};
-  return (
+  return !isLoaded ? (
+    <div className="listpage_skeleon">
+      <div>
+        <Loader />
+      </div>
+    </div>
+  ) : (
     <div className="listpage_container">
       <ItemModal item={state.curItem} onClose={setState} state={state} />
       <div className="listpage_filter_zone">
