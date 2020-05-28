@@ -60,14 +60,19 @@ const Main: React.SFC<Props> = ({ history }) => {
   const vaildUserSucess = (res: any) => onLogin(res.data);
   const validUserFailed = () => history.replace("/login");
 
-  const requestMonthlyItem = async (user_id: number) => {
+  const requestMonthlyItem = async (
+    user_id: number,
+    isMain: boolean = true,
+  ) => {
     let url = `http://18.217.232.233:8080/monthly_list?user_id=${user_id}`;
     try {
       let res = await axios.get(url);
       res.status === 201 && getMonthlyItem(res.data.monthly_list.items);
     } catch (err) {
     } finally {
-      requestTotalItem(user_id);
+      if (isMain) {
+        requestTotalItem(user_id);
+      }
     }
   };
   const requestTotalItem = async (user_id: number) => {
@@ -140,7 +145,7 @@ const Main: React.SFC<Props> = ({ history }) => {
         <div className="modal">
           <ItemModal item={state.curItem} onClose={setState} state={state} />
         </div>
-        <AddItem user_id={user_id} />
+        <AddItem user_id={user_id} request={requestMonthlyItem} />
         <div className="filterZone">
           <Search onChange={setState} state={state} />
           <Filter onChange={setOrderBy} orderBy={orderBy} />

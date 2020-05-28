@@ -240,7 +240,7 @@ const List: React.SFC<props> = ({ history }) => {
   const handleAllViewBtn = () => {
     setState({ ...state, curItems: items_total, viewDateOption: "" });
   };
-  const handleMonthlyViewBtn = () => {};
+
   return !isLoaded ? (
     <div className="listpage_skeleon">
       <div>
@@ -249,7 +249,12 @@ const List: React.SFC<props> = ({ history }) => {
     </div>
   ) : (
     <div className="listpage_container">
-      <ItemModal item={state.curItem} onClose={setState} state={state} />
+      <ItemModal
+        item={state.curItem}
+        onClose={setState}
+        state={state}
+        location="listpage"
+      />
       <div className="listpage_filter_zone">
         <Link
           to={"/home"}

@@ -19,12 +19,10 @@ const customStyles = {
 
 Modal.setAppElement("body");
 
-const ItemModal = ({ item, onClose, state }: any) => {
+const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
   //let [currentItem, setCurrentItem] = useState(state.curItem);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { purchaseItem } = useItems();
-  const { deleteItem } = useItems();
-  const { deleteList } = useItems();
+  const { deleteItem, deleteList, purchaseItem, items_total } = useItems();
   const [editMode, seteditMode] = useState(false);
   //* 모달 설정
   const openModal = () => {
@@ -86,14 +84,19 @@ const ItemModal = ({ item, onClose, state }: any) => {
           data: { user_id: item.user_id, image_file: item.image_file },
         });
         if (res.status === 202) {
-          if (
-            item.date.slice(5, 7) === String("0" + (new Date().getMonth() + 1))
-          ) {
+          if (location === "main") {
             deleteItem(item.id);
+            onClose({ ...state, curItem: {} });
           } else {
-            deleteList(item.id);
+            await deleteList(item.id);
+            let { viewDateOption } = state;
+            let cur = items_total.filter(
+              (curItem: any) =>
+                curItem.date.startsWith(viewDateOption) &&
+                curItem.id !== item.id,
+            );
+            await onClose({ ...state, curItem: {}, curItems: cur });
           }
-          onClose({ ...state, curItem: {} });
           setIsOpen(false);
         }
       } catch ({ response: { status } }) {
@@ -220,7 +223,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
             <h2>등록일자</h2>
             {editMode === true ? editDate() : viewDate()}
           </>
-
         </form>
         <button
           onClick={() => {
