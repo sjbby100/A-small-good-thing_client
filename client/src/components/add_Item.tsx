@@ -30,28 +30,23 @@ export const AddItem = ({ user_id }: any) => {
   const [state, setState] = useState(initialState);
   const { item_name, item_price, memo, link, purchased, worry } = state;
   const { getMonthlyItem, items_monthly } = useItems();
-  const [image, SetImage] = useState(initialState);
+  const [content, setContent] = useState("");
   // * img 업로드 관련
-  let formData: any;
   const handleImg = (e: any) => {
-    //문제가 있음. SetContent를 해도 바뀌지 않음
-    console.log(e.target.files[0]);
-    formData = new FormData();
-    formData.append("image_file", e.target.files[0]);
-    console.log(formData);
-    return formData;
+    setContent(e.target.files[0]);
   };
 
   const handleUpload = async (e: any) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("image_file", content);
     const url: string = "http://18.217.232.233:8080/image";
-    let res = await axios.post(url, formData);
-    console.log(res);
-    if (res.status === 200) {
-      let image_url = res.data.image_file;
-      SetImage(image_url);
-      handleAddItem();
-    }
+    try {
+      let res = await axios.post(url, formData);
+      if (res.status === 200) {
+        let image_url = res.data.image_file;
+      }
+    } catch (res) {}
   };
 
   const handleChange = ({ currentTarget }: any) => {
@@ -87,9 +82,13 @@ export const AddItem = ({ user_id }: any) => {
     return Number(str.replace(/,/gi, ""));
   };
 
-  const handleAddItem = async () => {
+  const handleAddItem = async (e: any) => {
+    e.preventDefault();
     const { vali_error } = validateItem(item_name, item_price);
     if (vali_error === "") {
+      if (content !== "") {
+        handleUpload(e);
+      }
       //* 아이템 정보 전송
       let data = {
         user_id,
@@ -101,8 +100,6 @@ export const AddItem = ({ user_id }: any) => {
         worry: Number(worry),
         date: newDate(state.date),
       };
-      console.log("post data");
-      console.log(data);
       let opt = {
         headers: { "content-type": "application/json" },
       };
@@ -121,17 +118,12 @@ export const AddItem = ({ user_id }: any) => {
             date: new Date(),
             worry: "",
           });
-          console.log(
-            data.date.slice(5, 7),
-            String("0" + (new Date().getMonth() + 1)),
-          );
+
           if (
             data.date.slice(5, 7) === String("0" + (new Date().getMonth() + 1))
           ) {
             getMonthlyItem([...items_monthly, res.data]);
           }
-
-          console.log("%c 아이템 추가 완료", "color: green");
         }
       } catch ({ response: { status } }) {
         if (status === 409) {
@@ -177,10 +169,8 @@ export const AddItem = ({ user_id }: any) => {
       style={{ display: "none" }}
       className="addItem"
       autoComplete="off"
-      action="http://18.217.232.233:8080/image"
-      method="post"
       encType="multipart/form-data"
-      onSubmit={handleUpload}
+      onSubmit={handleAddItem}
     >
       <div className="innerBox">
         {renderInput(state)}
