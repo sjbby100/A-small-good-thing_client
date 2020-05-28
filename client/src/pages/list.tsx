@@ -9,7 +9,9 @@ import Search from "../common/search";
 import Filter from "../common/filter";
 import util from "../services/util/index";
 import ItemModal from "../components/item_modal";
+import arrow from "../img/arrow.svg";
 import "./css/list.css";
+import { url } from "inspector";
 
 const { onFormat, onOrder, onSearch, validUserId } = util;
 
@@ -177,7 +179,6 @@ const List: React.SFC<props> = ({ history }) => {
     let obj = Object.keys(multiSelect);
     let items = obj.map((item) => Number(item));
     let url = `http://18.217.232.233:8080/items`;
-
     try {
       let res = await axios.delete(url, {
         headers: { "content-type": "application/json" },
@@ -209,27 +210,91 @@ const List: React.SFC<props> = ({ history }) => {
     }
     return monthList;
   };
+  const handleMonthCardStyle = (curMonth: string) => {
+    let style: any = {};
+    let month = state.viewDateOption;
+    // console.log(month, curMonth);
+    let now = new Date().getMonth() + 1;
+    if (curMonth === month) {
+      style.backgroundColor = "#ff7272";
+      style.width = "148px";
+      style.color = "#fff";
+      style.height = "113px";
+    }
+    if (month === "") {
+      if (now === Number(curMonth.slice(-2))) {
+        style.backgroundColor = "#ff7272";
+        style.width = "148px";
+        style.color = "#fff";
+        style.height = "113px";
+      }
+    }
+    return style;
+  };
 
+  handleMonthCardStyle("4");
   const renderMonthList = (list: any) => {
     let elements = [];
     for (const key in list) {
       elements.push(
-        <li key={key} onClick={() => handleViewOption(key)}>{`${key.slice(
-          6,
-          7,
-        )}월`}</li>,
+        <li
+          key={key}
+          onClick={() => handleViewOption(key)}
+          className="listpage_month"
+          style={handleMonthCardStyle(key)}
+          // style={{ backgroundColor: "#ff7272" }}
+        >{`${key.slice(6, 7)}월`}</li>,
       );
     }
     return elements;
   };
-
+  const renderDeleteBtn = (isEditable: boolean) =>
+    isEditable && (
+      <button
+        onClick={() => handelMultiDelete(user_id)}
+        className="listpage_delete"
+      >
+        삭제
+      </button>
+    );
+  const handleAllViewBtn = () => {
+    setState({ ...state, curItems: items_total, viewDateOption: "" });
+  };
+  const handleMonthlyViewBtn = () => {};
   return (
     <div className="listpage_container">
-      <Link to={"/home"}>뒤로가기 </Link>
-      <button onClick={() => handelMultiDelete(user_id)}></button>
-      <div>{renderMonthList(devideDate(items_total))}</div>
       <ItemModal item={state.curItem} onClose={setState} state={state} />
-      <div className="listpage_filter_zone"></div>
+      <div className="listpage_filter_zone">
+        <Link
+          to={"/home"}
+          className="listpage_back"
+          style={{ background: `url(${arrow}) no-repeat` }}
+        />
+        <div className="listpage_view_select">
+          <div className="listpage_view_option" onClick={handleAllViewBtn}>
+            <span
+              className="listpage_view_checkbox"
+              style={
+                state.viewDateOption === "" ? { background: "#646464" } : {}
+              }
+            />
+            <div className="listpage_view_text">전체보기</div>
+          </div>
+          <div className="listpage_view_option" onClick={handleDate}>
+            <span
+              className="listpage_view_checkbox"
+              style={
+                state.viewDateOption !== "" ? { background: "#646464" } : {}
+              }
+            />
+            <div className="listpage_view_text">월 별</div>
+          </div>
+        </div>
+        <div className="listpage_flex_line"></div>
+        <div className="listpage_month_box">
+          {state.viewDateOption ? renderMonthList(devideDate(items_total)) : ""}
+        </div>
+      </div>
       <div className="listpage_items_modal">
         <ListComponent
           onFormat={onFormat}
@@ -253,6 +318,7 @@ const List: React.SFC<props> = ({ history }) => {
         >
           편집하기
         </button>
+        {renderDeleteBtn(state.isEditable)}
       </div>
     </div>
   );
