@@ -39,16 +39,22 @@ const Item: React.SFC<Props> = ({
 
   const sliceLongWord = (string: string, max: number) => {
     if (location === "main") {
-      return string.length > max ? string.substr(0, max - 2) + " ..." : string;
+      if (string === item.memo) {
+        return string.length > max
+          ? string.substr(0, max - 1) + " ..."
+          : string;
+      }
+      return string.length > max ? string.substr(0, max) + " ..." : string;
     }
+
     if (location === "listpage") {
-      max *= 2;
+      max *= 1.5;
       if (string === item.memo) {
         return string.length > max
           ? string.substr(0, max * 2 - 3) + "..."
           : string;
       }
-      return string.length > max ? string.substr(0, max - 3) + "..." : string;
+      return string.length > max ? string.substr(0, max - 1) + "..." : string;
     }
     return string;
   };

@@ -33,7 +33,6 @@ const Main: React.SFC<Props> = ({ history }) => {
   const handleItemClick = ({ id }: any) => {
     let curItem = items_monthly.filter((item: any) => item.id === id);
     curItem = { ...curItem[0] };
-    console.log(curItem);
     setState({ ...state, curItem });
   };
 
