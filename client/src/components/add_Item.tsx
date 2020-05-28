@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import onFormat from "../services/util/onFormat";
 
-let newDate = (date: Date) => {
+export const newDate = (date: Date) => {
   //* yyyy-mm-dd
   let year: number = date.getFullYear();
   let month: any = date.getMonth() + 1;
@@ -23,7 +23,6 @@ const initialState = {
   purchased: false,
   date: new Date(),
   worry: "",
-  image: Image,
 };
 
 export const AddItem = ({ user_id }: any) => {
@@ -36,15 +35,14 @@ export const AddItem = ({ user_id }: any) => {
     setContent(e.target.files[0]);
   };
 
-  const handleUpload = async (e: any) => {
+  const handleUpload = async (e: any, item_id: number) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image_file", content);
-    const url: string = "http://18.217.232.233:8080/image";
+    const url: string = `http://18.217.232.233:8080/image?item_id=${item_id}`;
     try {
       let res = await axios.post(url, formData);
       if (res.status === 200) {
-        let image_url = res.data.image_file;
       }
     } catch (res) {}
   };
@@ -72,9 +70,6 @@ export const AddItem = ({ user_id }: any) => {
     if (item_price === "") {
       vali_error = "가격을 입력해주세요";
     }
-    // if(date === ""){
-    //   vali_error = "날짜를 입력해주세요"
-    // }
     return { vali_error };
   };
 
@@ -86,10 +81,13 @@ export const AddItem = ({ user_id }: any) => {
     e.preventDefault();
     const { vali_error } = validateItem(item_name, item_price);
     if (vali_error === "") {
-      if (content !== "") {
-        handleUpload(e);
-      }
       //* 아이템 정보 전송
+      // let data = {
+      //   ...state,
+      //   item_price: toRealNum(item_price),
+      //   worry: Number(worry),
+      //   date: newDate(state.date),
+      // };
       let data = {
         user_id,
         item_name,
@@ -108,15 +106,12 @@ export const AddItem = ({ user_id }: any) => {
         const res = await axios.post(url, data, opt);
         if (res.status === 201) {
           //! 이미지 전송
+          console.log(res);
+          if (content !== "" && content) {
+            handleUpload(e, res.data.id);
+          }
           setState({
-            ...state,
-            item_name: "",
-            item_price: "",
-            memo: "",
-            link: "",
-            purchased: false,
-            date: new Date(),
-            worry: "",
+            ...initialState,
           });
 
           if (
