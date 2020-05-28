@@ -90,7 +90,6 @@ export const AddItem = ({ user_id }: any) => {
   const handleAddItem = async () => {
     const { vali_error } = validateItem(item_name, item_price);
     if (vali_error === "") {
-      //* 이미지 전송
       //* 아이템 정보 전송
       let data = {
         user_id,

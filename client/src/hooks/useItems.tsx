@@ -80,7 +80,6 @@ export default function useItems() {
     purchaseItem,
     deleteList,
     deleteItem,
-
     multiDelete,
   };
 }
