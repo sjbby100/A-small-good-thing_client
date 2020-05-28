@@ -25,7 +25,7 @@ const initialState = {
   worry: "",
 };
 
-export const AddItem = ({ user_id }: any) => {
+export const AddItem = ({ user_id, request }: any) => {
   const [state, setState] = useState(initialState);
   const { item_name, item_price, memo, link, purchased, worry } = state;
   const { getMonthlyItem, items_monthly } = useItems();
@@ -42,9 +42,13 @@ export const AddItem = ({ user_id }: any) => {
     const url: string = `http://18.217.232.233:8080/image?item_id=${item_id}`;
     try {
       let res = await axios.post(url, formData);
+      console.log(res);
       if (res.status === 200) {
       }
-    } catch (res) {}
+    } catch (res) {
+    } finally {
+      request(user_id);
+    }
   };
 
   const handleChange = ({ currentTarget }: any) => {

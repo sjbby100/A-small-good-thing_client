@@ -58,18 +58,13 @@ const Item: React.SFC<Props> = ({
     }
     return string;
   };
-  const renderImg = (img: string) => {
-    let style: any = {};
-    if (img !== "") {
+  const renderImg = (img?: string) => {
+    if (img) {
+      let style: any = {};
       style.background = `url('${img}') no-repeat`;
       style.backgroundSize = "100% 100%";
-    } else {
-      style.width = "80px";
-      style.height = "80px";
-      style.background = "#e5e5e5";
-      style.opacity = "0.9";
+      return style;
     }
-    return style;
   };
 
   return (
