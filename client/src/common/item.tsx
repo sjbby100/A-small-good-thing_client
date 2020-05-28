@@ -58,6 +58,19 @@ const Item: React.SFC<Props> = ({
     }
     return string;
   };
+  const renderImg = (img: string) => {
+    let style: any = {};
+    if (img !== "") {
+      style.background = `url('${img}') no-repeat`;
+      style.backgroundSize = "100% 100%";
+    } else {
+      style.width = "80px";
+      style.height = "80px";
+      style.background = "#e5e5e5";
+      style.opacity = "0.9";
+    }
+    return style;
+  };
 
   return (
     <li
@@ -65,7 +78,14 @@ const Item: React.SFC<Props> = ({
       onClick={() => handleBtnClickEvent(item)}
       style={renderDeletableItem(item)}
     >
-      <div className={`${location}_list_image`}></div>
+      <div
+        className={`${location}_list_image`}
+        style={renderImg(item.image_file)}
+        // style={{
+        //   background: `url('https://asmallgoodthing.s3.ap-northeast-2.amazonaws.com/image/1590635473284.png') no-repeat`,
+        //   backgroundSize: "100% 100%",
+        // }}
+      ></div>
       <h1 className={`${location}_list_name`}>
         {sliceLongWord(item.item_name, 8)}
       </h1>
@@ -78,7 +98,7 @@ const Item: React.SFC<Props> = ({
         className={`${location}_list_price`}
         style={handlePurchasedItemStlye()}
       >
-        {`${onFormat(item.item_price)}원`}
+        {`+${onFormat(item.item_price)}원`}
       </h2>
     </li>
   );

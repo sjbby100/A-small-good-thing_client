@@ -11,6 +11,7 @@ import Filter from "../common/filter";
 import util from "../services/util/index";
 import { AddItem } from "../components/add_Item";
 import ItemModal from "../components/item_modal";
+
 const { onFormat, onSearch, onOrder, validUserId } = util;
 
 interface Props extends RouteComponentProps {}
@@ -22,6 +23,7 @@ const Main: React.SFC<Props> = ({ history }) => {
     monthlySaved,
     SumAllMonthly,
     itemStoreInit,
+    getTotalyItem,
   } = useItems();
 
   const { user_id, user_name, onLogout, onLogin } = useUserInfo();
@@ -64,8 +66,16 @@ const Main: React.SFC<Props> = ({ history }) => {
       let res = await axios.get(url);
       res.status === 201 && getMonthlyItem(res.data.monthly_list.items);
     } catch (err) {
-
+    } finally {
+      requestTotalItem(user_id);
     }
+  };
+  const requestTotalItem = async (user_id: number) => {
+    let url = `http://18.217.232.233:8080/total_list?user_id=${user_id}`;
+    try {
+      let res = await axios.get(url);
+      res.status === 201 && getTotalyItem(res.data.total_list.items);
+    } catch (err) {}
   };
 
   const renderGreet = () => (
@@ -104,7 +114,7 @@ const Main: React.SFC<Props> = ({ history }) => {
   let filteredList = onOrder(onSearch(items_monthly, state.value), orderBy);
 
   return user_id === 0 ? (
-    <div>아이디가 필요합니다</div>
+    <div>기다려 주세요</div>
   ) : (
     <div className="main_wrapper">
       <div className="main_grid">

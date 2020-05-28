@@ -108,14 +108,12 @@ const ItemModal = ({ item, onClose, state }: any) => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2>
-          <input>{item.name}</input>
-        </h2>
+        <h2>{item.item_name}</h2>
         <div>
           <p>이미지</p>
           <img
             style={{ width: "300px" }}
-            src="https://asmallgoodthing.s3.ap-northeast-2.amazonaws.com/image/1590626610724.png"
+            src="https://asmallgoodthing.s3.ap-northeast-2.amazonaws.com/image/1590635473284.png"
           />
         </div>
         <div>
@@ -133,7 +131,7 @@ const ItemModal = ({ item, onClose, state }: any) => {
           {item.worry}
         </div>
         <p>금액</p>
-        <div>{`${onFormat(Number(item.item_price))}원`}</div>;
+        <div>{`${onFormat(Number(item.item_price))}원`}</div>
         <form>
           <input />
         </form>
