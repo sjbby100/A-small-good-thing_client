@@ -7,6 +7,7 @@ import {
   itemsInit,
   purchasedItem,
   deletedItem,
+  deletedList,
   deleteMultiItems,
 } from "../modules/items";
 import { useCallback } from "react";
@@ -55,6 +56,12 @@ export default function useItems() {
     },
     [dispatch],
   );
+  const deleteList = useCallback(
+    (item_id) => {
+      dispatch(deletedList(item_id));
+    },
+    [dispatch],
+  );
   const multiDelete = useCallback(
     (deleteItems) => {
       dispatch(deleteMultiItems(deleteItems));
@@ -71,6 +78,7 @@ export default function useItems() {
     monthlySaved,
     SumAllMonthly,
     purchaseItem,
+    deleteList,
     deleteItem,
     multiDelete,
   };
