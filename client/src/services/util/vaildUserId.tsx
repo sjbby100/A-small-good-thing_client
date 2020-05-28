@@ -8,7 +8,7 @@ const validUserId = async (success: Function, err?: Function) => {
   };
   try {
     let res = await axios.post(url, {}, opt);
-    console.log(res);
+
     res.status === 200 && (await success(res));
   } catch (error) {
     if (error.response.status === 404) {

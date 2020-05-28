@@ -33,7 +33,7 @@ const Main: React.SFC<Props> = ({ history }) => {
   const handleItemClick = ({ id }: any) => {
     let curItem = items_monthly.filter((item: any) => item.id === id);
     curItem = { ...curItem[0] };
-    console.log(curItem);
+
     setState({ ...state, curItem });
   };
 
@@ -64,7 +64,7 @@ const Main: React.SFC<Props> = ({ history }) => {
       let res = await axios.get(url);
       res.status === 201 && getMonthlyItem(res.data.monthly_list.items);
     } catch (err) {
-      console.log(err);
+
     }
   };
 

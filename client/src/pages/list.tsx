@@ -61,7 +61,6 @@ const List: React.SFC<props> = ({ history }) => {
   }, [state.viewDateOption]);
 
   const handleDate = () => {
-    console.log(" handleDate");
     let now = new Date();
     let month: string | number = now.getMonth() + 1;
     if (month.toString().length === 1) month = `0${month}`;
@@ -77,7 +76,7 @@ const List: React.SFC<props> = ({ history }) => {
       res.status === 201 && (await getMonthlyItem(items));
       await handleCurItem(items, state.viewDateOption);
     } catch (err) {
-      console.log(err);
+
     } finally {
       requestTotalItem(user_id);
     }
@@ -87,10 +86,10 @@ const List: React.SFC<props> = ({ history }) => {
     let url = `http://18.217.232.233:8080/total_list?user_id=${user_id}`;
     try {
       let res = await axios.get(url);
-      console.log(" 토탈 리퀘스트");
+
       res.status === 201 && getTotalyItem(res.data.total_list.items);
     } catch (err) {
-      console.log(err);
+
     }
   };
 
@@ -194,7 +193,7 @@ const List: React.SFC<props> = ({ history }) => {
         setState({ ...state, curItems: items, multiSelect: {} });
       }
     } catch (err) {
-      console.log(err);
+
     }
   };
 
@@ -213,7 +212,7 @@ const List: React.SFC<props> = ({ history }) => {
   const handleMonthCardStyle = (curMonth: string) => {
     let style: any = {};
     let month = state.viewDateOption;
-    // console.log(month, curMonth);
+
     let now = new Date().getMonth() + 1;
     if (curMonth === month) {
       style.backgroundColor = "#ff7272";

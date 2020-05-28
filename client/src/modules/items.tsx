@@ -101,13 +101,13 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
       let deleted_monthly = state.items_monthly.filter(
         (item: any) => item.id !== action.payload.item_id,
       );
-      console.log(deleted_monthly);
+
       return { ...state, items_monthly: [...deleted_monthly] };
     case LIST_DELETE:
       let deleted_list = state.items_total.filter(
         (item: any) => item.id !== action.payload.item_id,
       );
-      console.log(deleted_list);
+
       return { ...state, items_total: [...deleted_list] };
     case ITEMS_MULTI_DELETE:
       let items = state.items_total.filter(

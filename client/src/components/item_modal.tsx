@@ -37,7 +37,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
 
   //* link연결
   const handleLink = () => {
-    console.log(item.link);
     if (item.link.length === 0) {
       alert("링크가 없습니다.");
     } else {
@@ -47,7 +46,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
   // todo 구매완료 : 체크박스
   const handlePurchased = async () => {
     let data = {
-      //? 지은님과 상의 후 간략하게 수정 가능 할 것 으로 예상
       user_id: item.user_id,
       item_name: item.item_name,
       item_price: item.item_price,
@@ -65,7 +63,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
     try {
       const res = await axios.patch(url, data, opt);
       if (res.status === 201) {
-        console.log("구매하기로 변경");
       }
     } catch ({ response: { status } }) {
       if (status === 404) {
@@ -84,7 +81,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
           data: { user_id: item.user_id, image_id: null },
         });
         if (res.status === 202) {
-          console.log("delete item");
           if (
             item.date.slice(5, 7) === String("0" + (new Date().getMonth() + 1))
           ) {
@@ -103,7 +99,6 @@ const ItemModal = ({ item, onClose, state }: any) => {
   };
 
   // todo 수정하기 : 어려울듯 .. 제일 마지막에
-  console.log(item);
   return (
     <div>
       <Modal
@@ -114,7 +109,7 @@ const ItemModal = ({ item, onClose, state }: any) => {
         contentLabel="Example Modal"
       >
         <h2>
-          <input></input>
+          <input>{item.name}</input>
         </h2>
         <div>
           <p>이미지</p>

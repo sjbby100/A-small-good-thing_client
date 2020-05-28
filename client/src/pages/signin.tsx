@@ -27,10 +27,8 @@ const Signin: React.FC<state> = ({ history }) => {
 
   useEffect(() => {
     if (user_id === 0) {
-      console.log("뭐지?");
       validUserId(vaildUserIdSuccess);
     } else {
-      console.log("세션이 있습니다.");
     }
   }, []);
 
