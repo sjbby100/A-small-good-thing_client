@@ -3,12 +3,9 @@ export const ITEMS_GET_TOTAL = "ITEMS_GET_TOTAL" as const;
 export const ITEMS_STORE_INIT = "ITEM_STORE_INIT" as const;
 export const ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT = "ITEMS_SUM_ALL_SAVED_MONTHLY_AMOUNT" as const;
 export const ITEMS_PURCHASED = " ITEMS_PURCHASED" as const;
-
 export const ITEMS_DELETE = "ITEMS_DELETE" as const;
-// export const LIST_DELETE = "LEST_DELETE" as const;
-
 export const ITEMS_MULTI_DELETE = "ITEMS_MULTI_DELETE" as const;
-
+export const LIST_DELETE = "LIST_DELETE" as const;
 
 export const getMonthlyItems = (items: any) => ({
   type: ITEMS_GET,
@@ -34,12 +31,12 @@ export const deletedItem = (item_id: number) => ({
     item_id,
   },
 });
-// export const deletedList = (item_id: number) => ({
-//   type: LIST_DELETE,
-//   payload: {
-//     item_id,
-//   },
-// });
+export const deletedList = (item_id: number) => ({
+  type: LIST_DELETE,
+  payload: {
+    item_id,
+  },
+});
 
 export const getTotalyItems = (items: any) => ({
   type: ITEMS_GET_TOTAL,
@@ -61,13 +58,10 @@ type ItemsAction =
   | ReturnType<typeof sumAllSaved>
   | ReturnType<typeof itemsInit>
   | ReturnType<typeof purchasedItem>
-
-  | ReturnType<typeof deletedItem>;
-// | ReturnType<typeof deletedList>;
-
+  | ReturnType<typeof deletedItem>
   | ReturnType<typeof getTotalyItems>
+  | ReturnType<typeof deletedList>
   | ReturnType<typeof deleteMultiItems>;
-
 
 const reducer = (state = initialItemState, action: ItemsAction) => {
   switch (action.type) {
@@ -107,12 +101,15 @@ const reducer = (state = initialItemState, action: ItemsAction) => {
       let deleted_monthly = state.items_monthly.filter(
         (item: any) => item.id !== action.payload.item_id,
       );
+      console.log(deleted_monthly);
       return { ...state, items_monthly: [...deleted_monthly] };
-    //   case LIST_DELETE:
-    //     let deleted_list = state.items_total.filter(
-    //       (item: any) => item.id !== action.payload.item_id,
-    //     );
-    //     return { ...state, items_total: [...deleted_list] };
+
+    case LIST_DELETE:
+      let deleted_list = state.items_total.filter(
+        (item: any) => item.id !== action.payload.item_id,
+      );
+      console.log(deleted_list);
+      return { ...state, items_total: [...deleted_list] };
 
     case ITEMS_MULTI_DELETE:
       let items = state.items_total.filter(

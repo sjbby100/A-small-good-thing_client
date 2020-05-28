@@ -23,33 +23,35 @@ const initialState = {
   purchased: false,
   date: new Date(),
   worry: "",
-  img: Image,
+  image: Image,
 };
+
 export const AddItem = ({ user_id }: any) => {
   const [state, setState] = useState(initialState);
   const { item_name, item_price, memo, link, purchased, worry } = state;
   const { getMonthlyItem, items_monthly } = useItems();
-
+  const [image, SetImage] = useState(initialState);
   // * img 업로드 관련
-  // const [uploadedImg, setUploadedImg] = useState({
-  //   fileName: "",
-  //   filePath: "",
-  // });
-  const [content, setContent] = useState("");
-
+  let formData: any;
   const handleImg = (e: any) => {
-    console.log(e.target.files);
-    setContent(e.target.files[0]);
+    //문제가 있음. SetContent를 해도 바뀌지 않음
+    console.log(e.target.files[0]);
+    formData = new FormData();
+    formData.append("image_file", e.target.files[0]);
+    console.log(formData);
+    return formData;
   };
 
-  const handleUpload = async () => {
-    //e.preventDefault();
-    const formData = new FormData();
-    formData.append("img", content);
+  const handleUpload = async (e: any) => {
+    e.preventDefault();
     const url: string = "http://18.217.232.233:8080/image";
-    const opt: any = { headers: { encType: "multipart/form-data" } };
-    let res = await axios.post(url, formData, opt);
+    let res = await axios.post(url, formData);
     console.log(res);
+    if (res.status === 200) {
+      let image_url = res.data.image_file;
+      SetImage(image_url);
+      handleAddItem();
+    }
   };
 
   const handleChange = ({ currentTarget }: any) => {
@@ -85,12 +87,10 @@ export const AddItem = ({ user_id }: any) => {
     return Number(str.replace(/,/gi, ""));
   };
 
-  const handleAddItem = async (e: any) => {
-    e.preventDefault();
+  const handleAddItem = async () => {
     const { vali_error } = validateItem(item_name, item_price);
     if (vali_error === "") {
       //* 이미지 전송
-      handleUpload();
       //* 아이템 정보 전송
       let data = {
         user_id,
@@ -178,20 +178,20 @@ export const AddItem = ({ user_id }: any) => {
       style={{ display: "none" }}
       className="addItem"
       autoComplete="off"
-      action="/upload"
+      action="http://18.217.232.233:8080/image"
       method="post"
       encType="multipart/form-data"
-      onSubmit={handleAddItem}
+      onSubmit={handleUpload}
     >
       <div className="innerBox">
         {renderInput(state)}
         <label>날짜</label>
         <DatePicker selected={state.date} onChange={dateChange} />
       </div>
-      <input type="file" name="imgFile" onChange={handleImg}></input>
-      <div>
-        <button className="addItem_button">추가</button>
-      </div>
+      <input type="file" name="imgFile" onChange={handleImg} />
+      <button type="submit" className="addItem_button">
+        추가
+      </button>
     </form>
   );
 };
