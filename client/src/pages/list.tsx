@@ -27,7 +27,7 @@ const List: React.SFC<props> = ({ history }) => {
   } = useItems();
 
   let [state, setState] = useState<any>({
-    viewDateOption: "",
+    viewDateOption: "2020-05",
     curPage: 1,
     pageSize: 6,
     isEditable: false,
@@ -65,8 +65,8 @@ const List: React.SFC<props> = ({ history }) => {
     let month: string | number = now.getMonth() + 1;
     if (month.toString().length === 1) month = `0${month}`;
     let year = now.getFullYear();
-    let date = year + "-" + month;
-    setState({ ...state, viewDateOption: date });
+    let viewDateOption = year + "-" + month;
+    setState({ ...state, viewDateOption });
   };
   const requestMonthlyItem = async (user_id: number) => {
     let url = `http://18.217.232.233:8080/monthly_list?user_id=${user_id}`;

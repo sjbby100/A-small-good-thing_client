@@ -28,7 +28,9 @@ const Signin: React.FC<state> = ({ history }) => {
   useEffect(() => {
     if (user_id === 0) {
       validUserId(vaildUserIdSuccess);
+
     } else {
+
     }
   }, []);
 
