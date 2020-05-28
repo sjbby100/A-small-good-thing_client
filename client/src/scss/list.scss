@@ -1,13 +1,93 @@
 .listpage_container {
   position: relative;
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: minmax(180px, 280px) 1fr;
   grid-template-rows: 32px 48px 48px 1fr;
   background-color: #f5f8f9;
   width: 100vw;
   height: 100vh;
 }
 .listpage_filter_zone {
+  grid-column: 1/2;
+  height: 80vh;
+  display: grid;
+  grid-template-rows: 48px 72px 88px 12px 32px 1fr;
+  grid-template-columns: 36px 1fr;
+}
+.listpage_back {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  position: relative;
+  top: 8px;
+  grid-row: 1/2;
+  grid-column: 2/3;
+  // background-color: red;
+}
+.listpage_view_select {
+  grid-row: 3/4;
+  grid-column: 2/3;
+}
+.listpage_view_option {
+  margin-bottom: 16px;
+  cursor: pointer;
+  width: 100px;
+  margin-left: 8px;
+}
+.listpage_view_text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height */
+
+  color: #646464;
+  &:hover {
+    color: #000;
+  }
+}
+.listpage_view_checkbox {
+  float: left;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #646464;
+  margin-right: 8px;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0px 4px;
+}
+.listpage_flex_line {
+  grid-row: 5/6;
+  grid-column: 2/3;
+  bottom: 0px;
+  width: 84%;
+  height: 2px;
+
+  background: #4b4b4b;
+  border-radius: 16px;
+}
+.listpage_month_box {
+  grid-row: 6/7;
+  grid-column: 2/3;
+  // display: flex;
+}
+.listpage_month {
+  width: 104px;
+  height: 104px;
+  left: 31px;
+  top: 471px;
+  background: #ffffff;
+  box-shadow: 3px 6px 16px rgba(66, 66, 66, 0.08);
+  border-radius: 16px 16px 4px 16px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 41px;
+  letter-spacing: -0.06em;
+  color: #777777;
+  padding-left: 20px;
+  padding-top: 12px;
+  margin-bottom: 28px;
+  cursor: pointer;
 }
 .listpage_search_zone {
   position: relative;
@@ -97,6 +177,31 @@
 .listpage_editmode_btn {
   position: relative;
   left: 172px;
+  width: 80px;
+  height: 54px;
+  background: none;
+  border: 2px solid #a3a3a3;
+  box-sizing: border-box;
+  box-shadow: 3px 6px 16px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height */
+
+  letter-spacing: -0.07em;
+
+  color: #4f4848;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+.listpage_delete {
+  position: relative;
+  left: 185px;
   width: 80px;
   height: 54px;
   background: none;
