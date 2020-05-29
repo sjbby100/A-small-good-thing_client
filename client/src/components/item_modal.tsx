@@ -22,8 +22,14 @@ Modal.setAppElement("body");
 const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
   //let [currentItem, setCurrentItem] = useState(state.curItem);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const { deleteItem, deleteList, purchaseItem, items_total } = useItems();
-  const [editMode, seteditMode] = useState(false);
+  const {
+    deleteItem,
+    deleteList,
+    purchaseItem,
+    purchaseList,
+    items_total,
+  } = useItems();
+
   //* 모달 설정
   const openModal = () => {
     setIsOpen(true);
@@ -39,7 +45,6 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
 
   //* 모달 버튼 - purchased
   const onPurchased = () => {
-    //! 왜 처음에 undefined가 나올까?
     if (item.purchased === true) {
       onClose({ ...state, curItem: { ...item, purchased: false } });
     } else {
@@ -50,13 +55,15 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
   const handlePurchased = async () => {
     onPurchased();
     let data = { ...item };
-    console.log(item);
     purchaseItem(item.id);
     let opt = { headers: { "content-type": "application/json" } };
     let url = `http://18.217.232.233:8080/item?item_id=${item.id}`;
     try {
       const res = await axios.patch(url, data, opt);
       if (res.status === 201) {
+        await purchaseList(item.id);
+        let { viewDateOption } = state;
+        let cur = items_total.map((curItem: any) => {});
       }
     } catch ({ response: { status } }) {
       if (status === 404) {
@@ -107,24 +114,35 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
     }
   };
   // todo 수정하기 : 어려울듯 .. 제일 마지막에
-  const [editState, setEditState] = useState(item);
+  const initialState = {
+    item_name: "",
+    item_price: "",
+    memo: "",
+    link: "",
+    purchased: false,
+    date: new Date(),
+    image_file: "",
+    worry: "",
+  };
+  const curState = { ...item };
+
+  const [editState, setEditState] = useState(initialState);
+  const [editMode, seteditMode] = useState(false);
 
   const handleChange = ({ currentTarget }: any) => {
-    const { value, name } = currentTarget;
+    const { name, value } = currentTarget;
     if (name === "item_price") {
       setEditState({
-        ...editState,
+        ...initialState,
         [name]: onFormat(Number(value.replace(/[^\.0-9]/g, ""))),
       });
     } else {
-      setEditState({
-        ...editState,
-        [name]: value,
-      });
+      console.log(initialState);
+      setEditState({ ...initialState, [name]: value });
     }
   };
   const dateChange = (date: any) => {
-    setEditState({
+    onClose({
       ...editState,
       date: date,
     });
@@ -134,14 +152,32 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
       seteditMode(true);
     } else {
       //! 내용 종합해서 patch 요청 보내기
-      seteditMode(false);
+      const data = { ...editState };
+      const url = seteditMode(false);
     }
   };
+  const isPurchased = () => {
+    if (curState.purchased === true) {
+      return <p>네가 좋음 나도 좋아</p>;
+    } else {
+      return <p>좋았어 아꼈어!</p>;
+    }
+  };
+
   const editItem_name = () => {
-    return <input value={item.item_name} type="text" />;
+    return (
+      <input
+        placeholder={curState.item_name}
+        type="text"
+        onChange={handleChange}
+      />
+    );
   };
   const viewItem_name = () => {
-    return <h2>{item.item_name}</h2>;
+    return <h2>{curState.item_name}</h2>;
+  };
+  const viewPurchased = () => {
+    return <>{isPurchased()}</>;
   };
   const editImage = () => {
     return <input type="file" />;
@@ -149,31 +185,44 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
   const viewImage = () => {
     return (
       <img
-        style={{ width: "300px" }}
-        src="https://asmallgoodthing.s3.ap-northeast-2.amazonaws.com/image/1590635473284.png"
+        style={{ width: "300px", height: "300px" }}
+        src={
+          curState.image_file === null && !curState.image_file
+            ? ""
+            : curState.image_file
+        }
       />
     );
   };
   const editMemo = () => {
-    return <input type="text" placeholder={item.memo} />;
+    return (
+      <input type="text" placeholder={curState.memo} onChange={handleChange} />
+    );
   };
   const viewMemo = () => {
-    return <p>{item.memo}</p>;
+    return <p>{curState.memo}</p>;
   };
   const viewWorry = () => {
-    return <p>{item.worry}</p>;
+    return <p>{curState.worry}</p>;
   };
   const editWorry = () => {
-    return <input type="number" placeholder={item.worry} />;
+    return (
+      <input
+        type="number"
+        placeholder={curState.worry}
+        onChange={handleChange}
+      />
+    );
   };
   const viewItem_price = () => {
-    return <p>{`${onFormat(Number(item.item_price))}원`}</p>;
+    return <p>{`${onFormat(Number(curState.item_price))}원`}</p>;
   };
   const editItem_price = () => {
     return (
       <input
         type="number"
-        placeholder={`${onFormat(Number(item.item_price))}원`}
+        placeholder={`${onFormat(Number(curState.item_price))}원`}
+        onChange={handleChange}
       />
     );
   };
@@ -181,7 +230,7 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
     return <p>{item.date}</p>;
   };
   const editDate = () => {
-    return <DatePicker selected={editState.date} onChange={dateChange} />;
+    return <DatePicker selected={new Date()} onChange={dateChange} />;
   };
   const editButton = () => {
     return <button onClick={handleEdit}>수정하기</button>;
@@ -189,6 +238,7 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
   const editCompleteButton = () => {
     return <button onClick={handleEdit}>수정완료</button>;
   };
+
   return (
     <div>
       <Modal
@@ -199,14 +249,9 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
         contentLabel="Example Modal"
       >
         <form onChange={handleChange}>
-          <>
-            <h2>item_name</h2>
-            {editMode === true ? editItem_name() : viewItem_name()}
-          </>
-          <>
-            <h2>image</h2>
-            {editMode === true ? editImage() : viewImage()}
-          </>
+          <>{editMode === true ? editItem_name() : viewItem_name()}</>
+          <>{editMode === true ? editImage() : viewImage()}</>
+          <>{viewPurchased()}</>
           <>
             <h2>고민하는 이유</h2>
             {editMode === true ? editMemo() : viewMemo()}
@@ -232,7 +277,7 @@ const ItemModal = ({ item, onClose, state, location = "main" }: any) => {
           구매완료
         </button>
         <button onClick={handleLink}>구매하기</button>
-        <button onClick={handleEdit}>수정하기</button>
+        {/* <button onClick={handleEdit}>수정하기</button> */}
         <button onClick={handleDelete}>삭제하기</button>
         <button onClick={closeModal}>닫기</button>
       </Modal>

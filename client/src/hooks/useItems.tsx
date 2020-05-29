@@ -6,6 +6,7 @@ import {
   sumAllSaved,
   itemsInit,
   purchasedItem,
+  purchasedList,
   deletedItem,
   deletedList,
   deleteMultiItems,
@@ -49,7 +50,12 @@ export default function useItems() {
     },
     [dispatch],
   );
-
+  const purchaseList = useCallback(
+    (item_id) => {
+      dispatch(purchasedList(item_id));
+    },
+    [dispatch],
+  );
   const deleteItem = useCallback(
     (item_id) => {
       dispatch(deletedItem(item_id));
@@ -78,6 +84,7 @@ export default function useItems() {
     monthlySaved,
     SumAllMonthly,
     purchaseItem,
+    purchaseList,
     deleteList,
     deleteItem,
     multiDelete,

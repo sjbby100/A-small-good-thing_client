@@ -30,6 +30,7 @@ export const AddItem = ({ user_id, request }: any) => {
   const { item_name, item_price, memo, link, purchased, worry } = state;
   const { getMonthlyItem, items_monthly } = useItems();
   const [content, setContent] = useState("");
+
   // * img 업로드 관련
   const handleImg = (e: any) => {
     setContent(e.target.files[0]);
@@ -47,7 +48,7 @@ export const AddItem = ({ user_id, request }: any) => {
       }
     } catch (res) {
     } finally {
-      request(user_id);
+      request(user_id, false);
     }
   };
 
@@ -83,19 +84,14 @@ export const AddItem = ({ user_id, request }: any) => {
 
   const handleAddItem = async (e: any) => {
     e.preventDefault();
-    const { vali_error } = validateItem(item_name, item_price);
+    const { vali_error } = validateItem(state.item_name, state.item_price);
     if (vali_error === "") {
       //* 아이템 정보 전송
-      // let data = {
-      //   ...state,
-      //   item_price: toRealNum(item_price),
-      //   worry: Number(worry),
-      //   date: newDate(state.date),
-      // };
+
       let data = {
         user_id,
         item_name,
-        item_price: toRealNum(item_price),
+        item_price: toRealNum(state.item_price),
         memo,
         link,
         purchased,
@@ -110,7 +106,6 @@ export const AddItem = ({ user_id, request }: any) => {
         const res = await axios.post(url, data, opt);
         if (res.status === 201) {
           //! 이미지 전송
-          console.log(res);
           if (content !== "" && content) {
             handleUpload(e, res.data.id);
           }
@@ -162,24 +157,42 @@ export const AddItem = ({ user_id, request }: any) => {
       date: date,
     });
   };
-
-  return (
-    <form
-      style={{ display: "none" }}
-      className="addItem"
-      autoComplete="off"
-      encType="multipart/form-data"
-      onSubmit={handleAddItem}
-    >
-      <div className="innerBox">
-        {renderInput(state)}
-        <label>날짜</label>
-        <DatePicker selected={state.date} onChange={dateChange} />
-      </div>
-      <input type="file" name="imgFile" onChange={handleImg} />
-      <button type="submit" className="addItem_button">
-        추가
+  //! view 관련
+  const [view, setView] = useState(true);
+  const handleView = () => {
+    if (view === false) {
+      setView(true);
+    } else {
+      setView(false);
+    }
+  };
+  const viewAddItem = () => {
+    return (
+      <form
+        className="addItem"
+        autoComplete="off"
+        encType="multipart/form-data"
+        onSubmit={handleAddItem}
+      >
+        <div className="innerBox">
+          {renderInput(state)}
+          <label>날짜</label>
+          <DatePicker selected={state.date} onChange={dateChange} />
+        </div>
+        <button onClick={handleView}>돌아가기</button>
+        <input type="file" name="imgFile" onChange={handleImg} />
+        <button type="submit" className="addItem_button">
+          추가
+        </button>
+      </form>
+    );
+  };
+  const viewAddButton = () => {
+    return (
+      <button className="addItem_Click" onClick={handleView}>
+        입력하기
       </button>
-    </form>
-  );
+    );
+  };
+  return <>{view === false ? viewAddButton() : viewAddItem()}</>;
 };

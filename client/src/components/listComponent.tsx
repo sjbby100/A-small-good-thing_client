@@ -30,7 +30,7 @@ const ListComponent: React.SFC<any> = ({
     return (
       <ul className={`${location}_list`}>
         <div className={`${location}_empty_list`}>
-          앗 ! 아직 이번달은 고민할 제품이 없어요.
+          앗 ! 이번 달은 아직 고민할 제품이 없어요.
           <br />
           좌측에 <h1 className="accent">입력하기 버튼</h1>을 사용해 제품을
           추가해보세요
