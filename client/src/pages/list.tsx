@@ -29,6 +29,7 @@ const List: React.SFC<props> = ({ history }) => {
     value: "",
     curItem: {},
     curItems: [],
+    curSum: 0,
   });
   let [isLoaded, setLoaded] = useState(false);
 
@@ -43,6 +44,19 @@ const List: React.SFC<props> = ({ history }) => {
       requestTotalItem(user_id);
     }
   }, []);
+  useEffect(() => {
+    let curSum = state.curItems.reduce(
+      (acc: number, { item_price, purchased }: any) => {
+        if (purchased === false) {
+          return (acc += item_price);
+        } else {
+          return acc;
+        }
+      },
+      0,
+    );
+    setState({ ...state, curSum });
+  }, [state.curItems]);
 
   useEffect(() => {
     user_id > 0 && user_id !== undefined && requestTotalItem(user_id);
@@ -71,7 +85,7 @@ const List: React.SFC<props> = ({ history }) => {
 
       setTimeout(() => {
         setLoaded(true);
-      }, 1250);
+      }, 1000);
       // setLoaded(true);
     } catch (err) {}
   };
@@ -197,22 +211,33 @@ const List: React.SFC<props> = ({ history }) => {
     let now = new Date().getMonth() + 1;
     if (curMonth === month) {
       style.backgroundColor = "#ff7272";
-      style.width = "148px";
+      style.width = "172px";
       style.color = "#fff";
       style.height = "113px";
     }
     if (month === "") {
       if (now === Number(curMonth.slice(-2))) {
         style.backgroundColor = "#ff7272";
-        style.width = "148px";
+        style.width = "172px";
         style.color = "#fff";
         style.height = "113px";
       }
     }
     return style;
   };
+  const renderMonthSlicer = (month: string) => {
+    let year = String(new Date().getFullYear());
+    console.log(year);
+    if (month.slice(0, 4) !== year) {
+      return `${month.slice(0, 4)}년 ${month.slice(5, 7)}월`;
+    }
+    if (month[5] === "0") {
+      return `${month.slice(6, 7)}월`;
+    } else {
+      return `${month.slice(5, 7)}월`;
+    }
+  };
 
-  handleMonthCardStyle("4");
   const renderMonthList = (list: any) => {
     let elements = [];
     for (const key in list) {
@@ -223,7 +248,12 @@ const List: React.SFC<props> = ({ history }) => {
           className="listpage_month"
           style={handleMonthCardStyle(key)}
           // style={{ backgroundColor: "#ff7272" }}
-        >{`${key.slice(6, 7)}월`}</li>,
+        >
+          {renderMonthSlicer(key)}
+          <h4 className="listpage_month_sum">
+            {state.viewDateOption === key && `${onFormat(state.curSum)}원`}
+          </h4>
+        </li>,
       );
     }
     return elements;

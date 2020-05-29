@@ -158,7 +158,7 @@ export const AddItem = ({ user_id, request }: any) => {
     });
   };
   //! view 관련
-  const [view, setView] = useState(true);
+  const [view, setView] = useState(false);
   const handleView = () => {
     if (view === false) {
       setView(true);
