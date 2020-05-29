@@ -95,13 +95,6 @@ const Main: React.SFC<Props> = ({ history }) => {
     </div>
   );
 
-  const handleItemInput = () => {
-    let target: any = document.querySelector(".addItem");
-    let target2: any = document.querySelector(".addItem_Click");
-    target.style.display = "block";
-    target2.style.display = "none";
-  };
-
   const handleLogOut = async () => {
     let url = `http://18.217.232.233:8080/logout`;
     let opt = {
@@ -135,17 +128,10 @@ const Main: React.SFC<Props> = ({ history }) => {
           onFormat={onFormat}
           handleClick={handleItemClick}
         />
-        <button
-          className="addItem_Click"
-          style={{ display: "block" }}
-          onClick={() => handleItemInput()}
-        >
-          입력하기
-        </button>
+        <AddItem user_id={user_id} request={requestMonthlyItem} />
         <div className="modal">
           <ItemModal item={state.curItem} onClose={setState} state={state} />
         </div>
-        <AddItem user_id={user_id} request={requestMonthlyItem} />
         <div className="filterZone">
           <Search onChange={setState} state={state} />
           <Filter onChange={setOrderBy} orderBy={orderBy} />
